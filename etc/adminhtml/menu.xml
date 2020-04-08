@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Syedzaidi_JetIntegration::jet" title="Jet" translate="title" module="Syedzaidi_JetIntegration"
+             sortOrder="200" dependsOnModule="Syedzaidi_JetIntegration" resource="Magento_Catalog::catalog"/>
+        <add id="Syedzaidi_JetIntegration::jet_products" title="Jet Products" translate="title"
+             module="Syedzaidi_JetIntegration" sortOrder="10" parent="Syedzaidi_JetIntegration::jet"
+             action="jetintegration/jetintegrationcontroller" resource="Magento_Catalog::products"/>
+    </menu>
+</config>
