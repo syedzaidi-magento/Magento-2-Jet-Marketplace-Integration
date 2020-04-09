@@ -1,5 +1,5 @@
 <?php
-namespace Syedzaidi\JetIntegration\Controller\Adminhtml\JetIntegrationController;
+namespace Syedzaidi\JetIntegration\Controller\Adminhtml\Products;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -35,7 +35,7 @@ class Index extends Action implements HttpGetActionInterface
     }
 
     /**
-     * Load the page defined in view/adminhtml/layout/jetintegration_jetintegrationcontroller_index.xml
+     * Load the page defined in view/adminhtml/layout/jetintegration_products_index.xml
      *
      * @return Page
      */
