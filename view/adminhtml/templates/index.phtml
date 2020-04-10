@@ -2,4 +2,7 @@
 
 /** @var \Syedzaidi\JetIntegration\Block\Products $block */
 
-echo $block->getProducts();
+foreach ($block->getProducts() as $item) {
+   echo "<b>Sku:</b> " . $item->merchant_sku . " <b>status:</b> " . $item->status;
+   echo "<br >";
+}

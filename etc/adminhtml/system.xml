@@ -1,0 +1,30 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="general" type="text">
+            <group id="jet_integration_settings" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Jet Integration Settings</label>
+                    <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Module Enable</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="user_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>User Key</label>
+                        <comment>Add jet market place user key here.</comment>
+                    </field>
+                    <field id="secret_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Secret Key</label>
+                        <comment>Add jet market place secret key here.</comment>
+                    </field>
+                    <field id="merchant_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Merchant Id</label>
+                        <comment>Add jet market place merchant id here.</comment>
+                    </field>
+                    <field id="ranges" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Ranges</label>
+                        <frontend_model>Syedzaidi\JetIntegration\Block\Adminhtml\Form\Field\Ranges</frontend_model>
+                        <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    </field>
+            </group>
+        </section>
+    </system>
+</config>

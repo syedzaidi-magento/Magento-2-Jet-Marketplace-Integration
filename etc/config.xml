@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <general>
+            <jet_integration_settings>
+                <enable>1</enable>
+                <user_key>xxxxx-xxxxx-xxxxx</user_key>
+                <secret_key>xxxxx-xxxxx-xxxxx</secret_key>
+                <merchant_id>xxxxx-xxxxx-xxxxx</merchant_id>
+            </jet_integration_settings>
+        </general>
+    </default>
+</config>
