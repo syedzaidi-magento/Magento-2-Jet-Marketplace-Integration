@@ -6,5 +6,8 @@
         <add id="Syedzaidi_JetIntegration::jet_products" title="Jet Products" translate="title"
              module="Syedzaidi_JetIntegration" sortOrder="10" parent="Syedzaidi_JetIntegration::jet"
              action="jetintegration/products" resource="Magento_Catalog::products"/>
+        <add id="Syedzaidi_JetIntegration::jet_setting" title="Settings" translate="title"
+             module="Syedzaidi_JetIntegration" sortOrder="11" parent="Syedzaidi_JetIntegration::jet"
+             action="adminhtml/system_config" resource="Magento_Catalog::products"/>
     </menu>
 </config>

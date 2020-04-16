@@ -19,11 +19,6 @@
                         <label>Merchant Id</label>
                         <comment>Add jet market place merchant id here.</comment>
                     </field>
-                    <field id="ranges" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Ranges</label>
-                        <frontend_model>Syedzaidi\JetIntegration\Block\Adminhtml\Form\Field\Ranges</frontend_model>
-                        <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    </field>
             </group>
         </section>
     </system>
