@@ -2,12 +2,14 @@
 
 namespace Syedzaidi\JetIntegration\Api;
 
+use Magento\Framework\Exception\NoSuchEntityException;
+
 interface JetTokenRepositoryInterface
 {
     /**
      * @param $id
-     * @return Syedzaidi\JetIntegration\Api\Data\JetTokenInterface
-     * @throws Magento\Framework\Exception\NoSuchEntityException
+     * @return Data\JetTokenInterface
+     * @throws NoSuchEntityException
      */
     public function getTokenById($id);
 
