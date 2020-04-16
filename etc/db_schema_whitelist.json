@@ -1,0 +1,10 @@
+{
+    "jet_marketplace_integration_token": {
+        "column": {
+            "token": true,
+            "time_occurred": true,
+            "expires_on": true,
+            "token_id": true
+        }
+    }
+}

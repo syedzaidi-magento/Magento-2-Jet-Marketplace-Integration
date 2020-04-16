@@ -3,6 +3,10 @@
 /** @var \Syedzaidi\JetIntegration\Block\Products $block */
 
 foreach ($block->getProducts() as $item) {
-   echo "<b>Sku:</b> " . $item->merchant_sku . " <b>status:</b> " . $item->status;
-   echo "<br >";
+
+    if(array_key_exists("merchant_sku", $item)) {
+        echo "<b>Sku:</b> " . $item->merchant_sku . " <b>status:</b> " . $item->status . "<br >";
+    } else {
+        echo "<b>Sku:</b> " . $item['sku_not_found'] . " <b>status:</b> " . "Not found in Jet" . "<br >";
+    }
 }

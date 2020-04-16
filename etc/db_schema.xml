@@ -1,0 +1,10 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="jet_marketplace_integration_token" resource="default" engine="innodb"
+           comment="jet marketplace integration authorization token">
+        <column xsi:type="int" name="token_id" padding="10" unsigned="true" nullable="false" comment="jet token Id"/>
+        <column xsi:type="varchar" name="token" nullable="false" length="1024" comment="jet token" />
+        <column xsi:type="timestamp" name="time_occurred" comment="Time of event"/>
+        <column xsi:type="datetime" name="expires_on" on_update="true" nullable="true" comment="expires on"/>
+    </table>
+</schema>
