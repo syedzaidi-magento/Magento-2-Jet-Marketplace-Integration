@@ -1,10 +1,6 @@
 <?php
 
-
 namespace Syedzaidi\JetIntegration\Api;
-
-
-use Magento\Framework\Api\SearchCriteriaInterface;
 
 interface JetTokenRepositoryInterface
 {
