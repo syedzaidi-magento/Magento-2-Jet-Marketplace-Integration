@@ -1,12 +1,14 @@
 <?php
 
-/** @var \Syedzaidi\JetIntegration\Block\Products $block */
+/** @var Products $block */
+
+use Syedzaidi\JetIntegration\Block\Products;
 
 foreach ($block->getProducts() as $item) {
 
     if(array_key_exists("merchant_sku", $item)) {
-        echo "<b>Sku:</b> " . $item->merchant_sku . " <b>status:</b> " . $item->status . "<br >";
+        echo sprintf("<b>Sku:</b> %s <b>status:</b> %s<br >", $item->merchant_sku, $item->status);
     } else {
-        echo "<b>Sku:</b> " . $item['sku_not_found'] . " <b>status:</b> " . "Not found in Jet" . "<br >";
+        echo sprintf("<b>Sku:</b> %s <b>status:</b> Not found in Jet<br >", $item['sku_not_found']);
     }
 }
