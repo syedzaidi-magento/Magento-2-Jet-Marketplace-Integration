@@ -134,7 +134,7 @@ class Products extends Template
 
     public function getProducts()
     {
-        $sku_list = ['my-12345-product', 'my-12345-product', 'my-12345-product', 'abc-1234-asdf'];
+        $sku_list = ['my-12345-product', 'abc-1234-asdf', 'my-12345-product', 'my-12345-product', 'abc-1234-asdf'];
 
         $products = [];
         foreach ($sku_list as $sku) {
