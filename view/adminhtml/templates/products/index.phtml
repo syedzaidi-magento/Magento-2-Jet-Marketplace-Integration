@@ -4,10 +4,14 @@
 
 use Syedzaidi\JetIntegration\Block\Products;
 
+echo "products";
 foreach ($block->getProducts() as $item) {
-    if(array_key_exists("merchant_sku", $item)) {
+    if(is_string($item) ) {
+        echo $item . " <button onClick=\"window.location.reload();\">Generate Token</button>";
+        break;
+    }elseif (array_key_exists("merchant_sku", $item)) {
         echo sprintf("<b>Sku:</b> %s <b>status:</b> %s<br >", $item->merchant_sku, $item->status);
-    } else {
+    }else {
         echo sprintf("<b>Sku:</b> %s <b>status:</b> Not found in Jet<br >", $item['sku_not_found']);
     }
 }
