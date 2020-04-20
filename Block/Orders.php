@@ -85,7 +85,7 @@ class Orders extends Template
 
     public function getAllJetOrders()
     {
-        $fullfillment = "&fulfillment_node=FULFILLMENT_NODE";
+        $fullfillment = "&fulfillment_node=_FULFILLMENT_NODE";
         $created = "created";
         $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $created . $fullfillment);
         $status = $response->getStatusCode(); // 200 status code
