@@ -31,3 +31,7 @@ $block->ordersByTagged("ready", ""); // created, ready, acknowledged, inprogress
 //        echo sprintf("<b>Sku:</b> %s <b>status:</b> Not found in Jet<br >", $item['sku_not_found']);
 //    }
 //}
+
+
+echo "<h2>Check for Order Details:</h2>";
+$block->ordersDetails("685599224909"); // created, ready, acknowledged, inprogress and complete

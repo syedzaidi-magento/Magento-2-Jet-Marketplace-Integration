@@ -116,6 +116,22 @@ class Orders extends Template
 //        return json_decode($responseContent);
     }
 
+    public function ordersDetails($jetDefinedOrderId)
+    {
+        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . "withoutShipmentDetail/" . $jetDefinedOrderId);
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        echo "<pre>";
+        print_r($responseContent);
+        // Add your logic using $responseContent
+//        if ($status === 401) {
+//            $this->setNewSaveToken();
+//            return "$status Not authorized. Please regenerate token";
+//        }
+//        return json_decode($responseContent);
+    }
+
 
     public function getSaveToken()
     {
