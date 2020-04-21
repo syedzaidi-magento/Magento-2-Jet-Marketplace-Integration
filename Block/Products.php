@@ -85,8 +85,7 @@ class Products extends Template
 
     public function getSaveToken()
     {
-        return $this->jetTokenRepositoryInterface->getTokenById(1);
-
+        return $this->jetTokenRepositoryInterface->getTokenById(0);
     }
 
     public function setNewSaveToken()

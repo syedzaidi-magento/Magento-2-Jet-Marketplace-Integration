@@ -3,7 +3,6 @@
 
 namespace Syedzaidi\JetIntegration\Model;
 
-use Magento\Framework\Exception\NoSuchEntityException;
 use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
 use Syedzaidi\JetIntegration\Api\Magento;
 use Syedzaidi\JetIntegration\Api\Syedzaidi;
@@ -40,17 +39,13 @@ class JetTokenRepository implements JetTokenRepositoryInterface
     {
         $jet_token = $this->jetTokenFactory->create();
         $jet_token->getResource()->load($jet_token, $id);
-        if ($jet_token->getTokenId()) {
-            return $jet_token->getToken();
-        }
-        throw new NoSuchEntityException(__('Unable to find token with ID "%1"', $id));
-
+        return $jet_token->getToken() ?: "no token found";
     }
 
     public function setNewToken($token)
     {
         $new_token = $this->jetTokenFactory->create();
-        $new_token->getResource()->load($new_token, 1);
+        $new_token->getResource()->load($new_token, 0);
         $new_token->setToken($token);
         $new_token->save();
     }

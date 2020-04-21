@@ -4,7 +4,6 @@
 
 use Syedzaidi\JetIntegration\Block\Products;
 
-echo "products";
 foreach ($block->getProducts() as $item) {
     if(is_string($item) ) {
         echo $item . " <button onClick=\"window.location.reload();\">Generate Token</button>";
