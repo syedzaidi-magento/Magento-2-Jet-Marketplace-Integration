@@ -83,16 +83,15 @@ class Orders extends Template
         $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
     }
 
-    public function getAllJetOrders($created)
+    public function ordersByStatus($byStatus)
     {
         $fullfillment = "&fulfillment_node=da819fcb598d45209ddcd998abba7c68";
-        //$created = "ready"; // created, ready, acknowledged, inprogress and complete
-        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $created . $fullfillment);
+        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $byStatus . $fullfillment);
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
         echo "<pre>";
-        var_dump($responseContent);
+        print_r($responseContent);
         // Add your logic using $responseContent
 //        if ($status === 401) {
 //            $this->setNewSaveToken();
@@ -100,6 +99,23 @@ class Orders extends Template
 //        }
 //        return json_decode($responseContent);
     }
+
+    public function ordersByTagged($byStatus, $tag)
+    {
+        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $byStatus . "/" . $tag);
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        echo "<pre>";
+        print_r($responseContent);
+        // Add your logic using $responseContent
+//        if ($status === 401) {
+//            $this->setNewSaveToken();
+//            return "$status Not authorized. Please regenerate token";
+//        }
+//        return json_decode($responseContent);
+    }
+
 
     public function getSaveToken()
     {
