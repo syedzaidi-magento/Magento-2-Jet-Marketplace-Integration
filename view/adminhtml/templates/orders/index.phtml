@@ -4,7 +4,8 @@
 
 use Syedzaidi\JetIntegration\Block\Orders;
 
-$block->getAllJetOrders();
+echo "<h2>Check for Orders</h2>";
+$block->getAllJetOrders("created"); // created, ready, acknowledged, inprogress and complete
 
 //foreach ($block->getProducts() as $item) {
 //    if(is_string($item) ) {

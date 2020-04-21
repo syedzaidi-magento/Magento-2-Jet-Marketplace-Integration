@@ -83,14 +83,15 @@ class Orders extends Template
         $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
     }
 
-    public function getAllJetOrders()
+    public function getAllJetOrders($created)
     {
         $fullfillment = "&fulfillment_node=da819fcb598d45209ddcd998abba7c68";
-        $created = "created";
+        //$created = "ready"; // created, ready, acknowledged, inprogress and complete
         $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $created . $fullfillment);
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        echo "<pre>";
         var_dump($responseContent);
         // Add your logic using $responseContent
 //        if ($status === 401) {
@@ -102,7 +103,7 @@ class Orders extends Template
 
     public function getSaveToken()
     {
-        return $this->jetTokenRepositoryInterface->getTokenById(1);
+        return $this->jetTokenRepositoryInterface->getTokenById(0);
 
     }
 
