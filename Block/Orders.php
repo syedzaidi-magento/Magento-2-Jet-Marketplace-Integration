@@ -29,8 +29,8 @@ class Orders extends Template
     public function __construct(
         Template\Context $context,
         JetApiCall $jetApiCall,
-        array $data = [])
-    {
+        array $data = []
+    ){
         parent::__construct($context, $data);
         $this->jetApiCall = $jetApiCall;
     }
