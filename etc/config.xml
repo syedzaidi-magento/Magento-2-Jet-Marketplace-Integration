@@ -7,6 +7,7 @@
                 <user_key>xxxxx-xxxxx-xxxxx</user_key>
                 <secret_key>xxxxx-xxxxx-xxxxx</secret_key>
                 <merchant_id>xxxxx-xxxxx-xxxxx</merchant_id>
+                <fulfillment_node_id>xxxxxxxxxxxxxxx</fulfillment_node_id>
             </jet_integration_settings>
         </general>
     </default>

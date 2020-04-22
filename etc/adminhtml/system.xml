@@ -19,6 +19,10 @@
                         <label>Merchant Id</label>
                         <comment>Add jet market place merchant id here.</comment>
                     </field>
+                    <field id="fulfillment_node_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Fulfillment Node Id</label>
+                        <comment>Add jet market place fulfillment node id here.</comment>
+                    </field>
             </group>
         </section>
     </system>

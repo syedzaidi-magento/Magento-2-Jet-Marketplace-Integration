@@ -41,6 +41,11 @@ class Orders extends Template
      */
     const SECRET_KEY = 'general/jet_integration_settings/secret_key';
 
+    /**
+     * API fulfillment node id
+     */
+    const FULFILLMENT_NODE_KEY = 'general/jet_integration_settings/fulfillment_node_id';
+
 
     /**
      * @var ClientFactory
@@ -85,7 +90,7 @@ class Orders extends Template
 
     public function ordersByStatus($byStatus)
     {
-        $fullfillment = "&fulfillment_node=da819fcb598d45209ddcd998abba7c68";
+        $fullfillment = "&fulfillment_node=" . $this->scopeConfig->getValue(self::FULFILLMENT_NODE_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
         $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $byStatus . $fullfillment);
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
@@ -143,7 +148,6 @@ class Orders extends Template
     {
         $new_token = "Bearer " . $this->getToken();
         return $this->jetTokenRepositoryInterface->setNewToken($new_token);
-
     }
 
     public function getToken()
