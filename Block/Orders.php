@@ -7,10 +7,6 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Helper\JetApiCall;
 
-/**
- * Class Orders
- * @package Syedzaidi\JetIntegration\Block
- */
 
 class Orders extends Template
 {
