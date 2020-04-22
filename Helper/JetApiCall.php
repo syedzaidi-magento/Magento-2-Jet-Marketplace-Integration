@@ -1,0 +1,150 @@
+<?php
+
+
+namespace Syedzaidi\JetIntegration\Helper;
+
+
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientFactory;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\ResponseFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Webapi\Rest\Request;
+use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
+
+class JetApiCall
+{
+    /**
+     * API request URL
+     */
+    const API_REQUEST_URI = 'https://merchant-api.jet.com/';
+
+    /**
+     * API user key
+     */
+    const USER_KEY = 'general/jet_integration_settings/user_key';
+
+    /**
+     * API secret key
+     */
+    const SECRET_KEY = 'general/jet_integration_settings/secret_key';
+
+    /**
+     * API fulfillment node id
+     */
+    const FULFILLMENT_NODE_KEY = 'general/jet_integration_settings/fulfillment_node_id';
+
+    /**
+     * @var ClientFactory
+     */
+    private $clientFactory;
+    /**
+     * @var ResponseFactory
+     */
+    private $responseFactory;
+    /**
+     * @var JetTokenRepositoryInterface
+     */
+    private $jetTokenRepositoryInterface;
+    /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
+     * JetApiCall constructor.
+     * @param ClientFactory $clientFactory
+     * @param ResponseFactory $responseFactory
+     * @param ScopeConfigInterface $scopeConfig
+     * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
+     */
+    public function __construct(
+        ClientFactory $clientFactory,
+        ResponseFactory $responseFactory,
+        ScopeConfigInterface $scopeConfig,
+        JetTokenRepositoryInterface $jetTokenRepositoryInterface
+    ){
+        $this->clientFactory = $clientFactory;
+        $this->responseFactory = $responseFactory;
+        $this->scopeConfig = $scopeConfig;
+        $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
+    }
+
+    public function getSaveToken()
+    {
+        return $this->jetTokenRepositoryInterface->getTokenById(0);
+
+    }
+
+    public function setNewSaveToken()
+    {
+        $new_token = "Bearer " . $this->getToken();
+        return $this->jetTokenRepositoryInterface->setNewToken($new_token);
+    }
+
+    public function getToken()
+    {
+        $user = $this->scopeConfig->getValue(self::USER_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
+        $secret = $this->scopeConfig->getValue(self::SECRET_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
+
+        $end_point = 'api/token';
+        $params = [
+            'json' => [
+                'user' => $user,
+                'pass' => $secret
+            ]
+        ];
+        $method = Request::HTTP_METHOD_POST;
+        $response = $this->doRequest($end_point, $params, $method);
+        $status = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents();
+        $responseContent = json_decode($responseContent, true);
+        $token =  $responseContent['id_token'];
+        return $token;
+    }
+
+    public function fulfillmentNodeId()
+    {
+        return "&fulfillment_node=" . $this->scopeConfig->getValue(self::FULFILLMENT_NODE_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
+    }
+
+    public function sendRequest($uriEndpoint, $params, $requestMethod)
+    {
+       return $this->doRequest($uriEndpoint, $params, $requestMethod);
+    }
+
+    /**
+     * Do API request with provided params
+     * @param string $uriEndpoint
+     * @param array $params
+     * @param string $requestMethod
+     * @return Response
+     */
+    private function doRequest(
+        string $uriEndpoint,
+        array $params = [],
+        string $requestMethod = Request::HTTP_METHOD_GET
+    ): Response {
+        /** @var Client $client */
+        $client = $this->clientFactory->create(['config' => [
+            'base_uri' => self::API_REQUEST_URI
+        ]]);
+        try {
+            $params = array_merge($params, ['headers' => ['Content-type' => 'application/json', 'Authorization' => $this->getSaveToken()]]);
+            $response = $client->request(
+                $requestMethod,
+                $uriEndpoint,
+                $params
+            );
+        } catch (GuzzleException $exception) {
+            /** @var Response $response */
+            $response = $this->responseFactory->create([
+                'status' => $exception->getCode(),
+                'reason' => $exception->getMessage()
+            ]);
+        }
+        return $response;
+    }
+}

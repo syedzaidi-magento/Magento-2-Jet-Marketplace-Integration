@@ -13,6 +13,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
+use Syedzaidi\JetIntegration\Helper\JetApiCall;
 
 /**
  * Class Products
@@ -22,29 +23,11 @@ use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
 class Orders extends Template
 {
     /**
-     * API request URL
-     */
-    const API_REQUEST_URI = 'https://merchant-api.jet.com/';
-
-    /**
      * API request endpoint
      */
     const API_REQUEST_ENDPOINT = 'api/orders/';
 
-    /**
-     * API user key
-     */
-    const USER_KEY = 'general/jet_integration_settings/user_key';
 
-    /**
-     * API secret key
-     */
-    const SECRET_KEY = 'general/jet_integration_settings/secret_key';
-
-    /**
-     * API fulfillment node id
-     */
-    const FULFILLMENT_NODE_KEY = 'general/jet_integration_settings/fulfillment_node_id';
 
 
     /**
@@ -56,42 +39,42 @@ class Orders extends Template
      */
     private $responseFactory;
     /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-    /**
      * @var JetTokenRepositoryInterface
      */
     private $jetTokenRepositoryInterface;
+    /**
+     * @var JetApiCall
+     */
+    private $jetApiCall;
 
     /**
      * Products constructor.
      * @param Template\Context $context
      * @param ClientFactory $clientFactory
      * @param ResponseFactory $responseFactory
-     * @param ScopeConfigInterface $scopeConfig
      * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
+     * @param JetApiCall $jetApiCall
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         ClientFactory $clientFactory,
         ResponseFactory $responseFactory,
-        ScopeConfigInterface $scopeConfig,
         JetTokenRepositoryInterface $jetTokenRepositoryInterface,
+        JetApiCall $jetApiCall,
         array $data = [])
     {
         parent::__construct($context, $data);
         $this->clientFactory = $clientFactory;
         $this->responseFactory = $responseFactory;
-        $this->scopeConfig = $scopeConfig;
         $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
+        $this->jetApiCall = $jetApiCall;
     }
 
     public function ordersByStatus($byStatus)
     {
-        $fullfillment = "&fulfillment_node=" . $this->scopeConfig->getValue(self::FULFILLMENT_NODE_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
-        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $byStatus . $fullfillment);
+        $fullfillment = $this->jetApiCall->fulfillmentNodeId();
+        $response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . $byStatus . $fullfillment, $parram = [], "GET");
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
@@ -107,7 +90,7 @@ class Orders extends Template
 
     public function ordersByTagged($byStatus, $tag)
     {
-        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $byStatus . "/" . $tag);
+        $response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . $byStatus . "/" . $tag, [], Request::METHOD_GET);
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
@@ -123,7 +106,7 @@ class Orders extends Template
 
     public function ordersDetails($jetDefinedOrderId)
     {
-        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . "withoutShipmentDetail/" . $jetDefinedOrderId);
+        $response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . "withoutShipmentDetail/" . $jetDefinedOrderId, [], "Get");
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
@@ -136,99 +119,4 @@ class Orders extends Template
 //        }
 //        return json_decode($responseContent);
     }
-
-
-    public function getSaveToken()
-    {
-        return $this->jetTokenRepositoryInterface->getTokenById(0);
-
-    }
-
-    public function setNewSaveToken()
-    {
-        $new_token = "Bearer " . $this->getToken();
-        return $this->jetTokenRepositoryInterface->setNewToken($new_token);
-    }
-
-    public function getToken()
-    {
-        $user = $this->scopeConfig->getValue(self::USER_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
-        $secret = $this->scopeConfig->getValue(self::SECRET_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
-
-        $end_point = 'api/token';
-        $params = [
-              'json' => [
-                  'user' => $user,
-                  'pass' => $secret
-              ]
-        ];
-        $method = Request::HTTP_METHOD_POST;
-        $response = $this->doRequest($end_point, $params, $method);
-        $status = $response->getStatusCode();
-        $responseBody = $response->getBody();
-        $responseContent = $responseBody->getContents();
-        $responseContent = json_decode($responseContent, true);
-        $token =  $responseContent['id_token'];
-        return $token;
-    }
-
-    public function getSingleSku($sku)
-    {
-        $response = $this->doRequest(static::API_REQUEST_ENDPOINT . $sku);
-        $status = $response->getStatusCode(); // 200 status code
-        $responseBody = $response->getBody();
-        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
-        // Add your logic using $responseContent
-        if ($status === 401) {
-            $this->setNewSaveToken();
-            return "$status Not authorized. Please regenerate token";
-        }
-        return json_decode($responseContent);
-    }
-
-    public function getProducts()
-    {
-        $sku_list = ['my-12345-product', 'abc-1234-asdf', 'my-12345-product', 'my-12345-product', 'abc-1234-asdf'];
-
-        $products = [];
-        foreach ($sku_list as $sku) {
-            array_push($products,  $this->getSingleSku($sku) ?: ['sku_not_found' => $sku]);
-        }
-
-        return $products;
-    }
-
-    /**
-     * Do API request with provided params
-     * @param string $uriEndpoint
-     * @param array $params
-     * @param string $requestMethod
-     * @return Response
-     */
-    private function doRequest(
-        string $uriEndpoint,
-        array $params = [],
-        string $requestMethod = Request::HTTP_METHOD_GET
-    ): Response {
-        /** @var Client $client */
-        $client = $this->clientFactory->create(['config' => [
-            'base_uri' => self::API_REQUEST_URI
-        ]]);
-        try {
-            $params = array_merge($params, ['headers' => ['Content-type' => 'application/json', 'Authorization' => $this->getSaveToken()]]);
-            $response = $client->request(
-                $requestMethod,
-                $uriEndpoint,
-                $params
-            );
-        } catch (GuzzleException $exception) {
-            /** @var Response $response */
-            $response = $this->responseFactory->create([
-                'status' => $exception->getCode(),
-                'reason' => $exception->getMessage()
-            ]);
-        }
-        return $response;
-    }
-
 }
