@@ -3,20 +3,12 @@ declare(strict_types=1);
 
 namespace Syedzaidi\JetIntegration\Block;
 
-
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Template;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientFactory;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Webapi\Rest\Request;
-use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
 use Syedzaidi\JetIntegration\Helper\JetApiCall;
 
 /**
- * Class Products
+ * Class Orders
  * @package Syedzaidi\JetIntegration\Block
  */
 
@@ -27,21 +19,6 @@ class Orders extends Template
      */
     const API_REQUEST_ENDPOINT = 'api/orders/';
 
-
-
-
-    /**
-     * @var ClientFactory
-     */
-    private $clientFactory;
-    /**
-     * @var ResponseFactory
-     */
-    private $responseFactory;
-    /**
-     * @var JetTokenRepositoryInterface
-     */
-    private $jetTokenRepositoryInterface;
     /**
      * @var JetApiCall
      */
@@ -50,24 +27,15 @@ class Orders extends Template
     /**
      * Products constructor.
      * @param Template\Context $context
-     * @param ClientFactory $clientFactory
-     * @param ResponseFactory $responseFactory
-     * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
      * @param JetApiCall $jetApiCall
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
-        ClientFactory $clientFactory,
-        ResponseFactory $responseFactory,
-        JetTokenRepositoryInterface $jetTokenRepositoryInterface,
         JetApiCall $jetApiCall,
         array $data = [])
     {
         parent::__construct($context, $data);
-        $this->clientFactory = $clientFactory;
-        $this->responseFactory = $responseFactory;
-        $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
         $this->jetApiCall = $jetApiCall;
     }
 
