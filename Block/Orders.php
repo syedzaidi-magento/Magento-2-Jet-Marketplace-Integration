@@ -42,14 +42,14 @@ class Orders extends Template
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        // Add your logic using $responseContent
+        if ($status === 401) {
+            $this->jetApiCall->setNewSaveToken();
+            return "$status Not authorized. Please regenerate token";
+        }
         echo "<pre>";
         print_r($responseContent);
-        // Add your logic using $responseContent
-//        if ($status === 401) {
-//            $this->setNewSaveToken();
-//            return "$status Not authorized. Please regenerate token";
-//        }
-//        return json_decode($responseContent);
+        return json_decode($responseContent);
     }
 
     public function ordersByTagged($byStatus, $tag)
@@ -58,14 +58,14 @@ class Orders extends Template
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        // Add your logic using $responseContent
+        if ($status === 401) {
+            $this->jetApiCall->setNewSaveToken();
+            return "$status Not authorized. Please regenerate token";
+        }
         echo "<pre>";
         print_r($responseContent);
-        // Add your logic using $responseContent
-//        if ($status === 401) {
-//            $this->setNewSaveToken();
-//            return "$status Not authorized. Please regenerate token";
-//        }
-//        return json_decode($responseContent);
+        return json_decode($responseContent);
     }
 
     public function ordersDetails($jetDefinedOrderId)
@@ -74,13 +74,13 @@ class Orders extends Template
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        // Add your logic using $responseContent
+        if ($status === 401) {
+            $this->jetApiCall->setNewSaveToken();
+            return "$status Not authorized. Please regenerate token";
+        }
         echo "<pre>";
         print_r($responseContent);
-        // Add your logic using $responseContent
-//        if ($status === 401) {
-//            $this->setNewSaveToken();
-//            return "$status Not authorized. Please regenerate token";
-//        }
-//        return json_decode($responseContent);
+        return json_decode($responseContent);
     }
 }
