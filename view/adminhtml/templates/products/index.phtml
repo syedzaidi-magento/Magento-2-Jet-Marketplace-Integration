@@ -14,3 +14,5 @@ foreach ($block->getProducts() as $item) {
         echo sprintf("<b>Sku:</b> %s <b>status:</b> Not found in Jet<br >", $item['sku_not_found']);
     }
 }
+
+$block->sendCatalogToJet();

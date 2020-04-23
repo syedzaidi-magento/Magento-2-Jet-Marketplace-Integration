@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Syedzaidi\JetIntegration\Block;
 
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Helper\JetApiCall;
@@ -18,15 +20,46 @@ class Products extends Template
      * @var JetApiCall
      */
     private $jetApiCall;
+    /**
+     * @var ProductRepositoryInterface
+     */
+    private $productRepository;
+    /**
+     * @var SearchCriteriaInterface
+     */
+    private $searchCriteria;
 
 
+    /**
+     * Products constructor.
+     * @param Template\Context $context
+     * @param JetApiCall $jetApiCall
+     * @param ProductRepositoryInterface $productRepository
+     * @param SearchCriteriaInterface $searchCriteria
+     * @param array $data
+     */
     public function __construct(
         Template\Context $context,
         JetApiCall $jetApiCall,
+        ProductRepositoryInterface $productRepository,
+        SearchCriteriaInterface $searchCriteria,
         array $data = [])
     {
         parent::__construct($context, $data);
         $this->jetApiCall = $jetApiCall;
+        $this->productRepository = $productRepository;
+        $this->searchCriteria = $searchCriteria;
+    }
+
+    public function sendCatalogToJet()
+    {
+        $this->searchCriteria->setFilterGroups();
+        $products = $this->productRepository->getList($this->searchCriteria);
+        $productItems = $products->getItems();
+
+       foreach ($productItems as $product){
+           echo $product->getName();
+       }
     }
 
     public function getSingleSku($sku)
