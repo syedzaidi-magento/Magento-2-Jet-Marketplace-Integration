@@ -7,7 +7,6 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\Filter;
 use Magento\Framework\Api\Search\FilterGroup;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Helper\JetApiCall;
@@ -39,10 +38,6 @@ class Products extends Template
      * @var FilterGroup
      */
     private $filterGroup;
-    /**
-     * @var UrlInterface
-     */
-    private $urlInterface;
 
 
     /**
@@ -53,7 +48,6 @@ class Products extends Template
      * @param SearchCriteriaInterface $searchCriteria
      * @param Filter $filter
      * @param FilterGroup $filterGroup
-     * @param UrlInterface $urlInterface
      * @param array $data
      */
     public function __construct(
@@ -63,7 +57,6 @@ class Products extends Template
         SearchCriteriaInterface $searchCriteria,
         Filter $filter,
         FilterGroup $filterGroup,
-        UrlInterface $urlInterface,
         array $data = [])
     {
         parent::__construct($context, $data);
@@ -72,33 +65,14 @@ class Products extends Template
         $this->searchCriteria = $searchCriteria;
         $this->filter = $filter;
         $this->filterGroup = $filterGroup;
-        $this->urlInterface = $urlInterface;
     }
 
     public function sendCatalogToJet()
     {
-       $productList = $this->jetApiCall->allProductByCategory();
-       $productData = [];
-       foreach ($productList as $product){
-           $productDataSet = [
-               'product_title' => $product->getName(),
-               'standard_product_codes' => [
-                   'standard_product_code' => $product->getUpc(),
-                   'standard_product_code_type' => "UPC"
-               ],
-               "multipack_quantity" => 6,
-               "brand" => $product->getBrand(),
-               "main_image_url" => $this->urlInterface->getBaseUrl() . substr($product->getImage(), 1),
-           ];
-           array_push($productData,  $productDataSet);
-
+        foreach ($this->jetApiCall->allProductByCategory() as $item){
+           echo "<pre>";
+           print_r($item);
        }
-       echo "<pre>";
-       print_r($productData);
-
-
-
-
     }
 
     public function getSingleSku($sku)

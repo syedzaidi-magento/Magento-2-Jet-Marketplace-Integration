@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
 
@@ -56,6 +57,10 @@ class JetApiCall
      * @var CollectionFactory
      */
     private $collectionFactory;
+    /**
+     * @var UrlInterface
+     */
+    private $urlInterface;
 
     /**
      * JetApiCall constructor.
@@ -63,6 +68,7 @@ class JetApiCall
      * @param ResponseFactory $responseFactory
      * @param ScopeConfigInterface $scopeConfig
      * @param CollectionFactory $collectionFactory
+     * @param UrlInterface $urlInterface
      * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
      */
     public function __construct(
@@ -70,6 +76,7 @@ class JetApiCall
         ResponseFactory $responseFactory,
         ScopeConfigInterface $scopeConfig,
         CollectionFactory $collectionFactory,
+        UrlInterface $urlInterface,
         JetTokenRepositoryInterface $jetTokenRepositoryInterface
     ){
         $this->clientFactory = $clientFactory;
@@ -77,6 +84,7 @@ class JetApiCall
         $this->scopeConfig = $scopeConfig;
         $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
         $this->collectionFactory = $collectionFactory;
+        $this->urlInterface = $urlInterface;
     }
 
     public function allProductByCategory()
@@ -86,7 +94,22 @@ class JetApiCall
         $collection->addAttributeToSelect('*');
         $collection->addCategoriesFilter(['in' => $categories]);
 
-        return $collection;
+        $productData = [];
+        foreach ($collection as $product){
+            $productDataSet = [
+                'product_title' => $product->getName(),
+                'standard_product_codes' => [
+                    'standard_product_code' => $product->getUpc(),
+                    'standard_product_code_type' => "UPC"
+                ],
+                "multipack_quantity" => 6,
+                "brand" => $product->getBrand(),
+                "main_image_url" => $this->urlInterface->getBaseUrl() . substr($product->getImage(), 1),
+            ];
+            array_push($productData,  $productDataSet);
+
+        }
+        return $productData;
     }
 
     public function getSaveToken()
