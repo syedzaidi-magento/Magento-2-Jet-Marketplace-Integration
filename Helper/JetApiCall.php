@@ -98,6 +98,7 @@ class JetApiCall
         foreach ($collection as $product){
             $productDataSet = [
                 'product_title' => $product->getName(),
+                'mfr_part_number' => $product->getSku(),
                 'standard_product_codes' => [
                     'standard_product_code' => $product->getUpc(),
                     'standard_product_code_type' => "UPC"
