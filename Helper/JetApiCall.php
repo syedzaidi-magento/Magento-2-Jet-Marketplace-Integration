@@ -9,6 +9,7 @@ use GuzzleHttp\ClientFactory;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
@@ -51,24 +52,41 @@ class JetApiCall
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
+    /**
+     * @var CollectionFactory
+     */
+    private $collectionFactory;
 
     /**
      * JetApiCall constructor.
      * @param ClientFactory $clientFactory
      * @param ResponseFactory $responseFactory
      * @param ScopeConfigInterface $scopeConfig
+     * @param CollectionFactory $collectionFactory
      * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
      */
     public function __construct(
         ClientFactory $clientFactory,
         ResponseFactory $responseFactory,
         ScopeConfigInterface $scopeConfig,
+        CollectionFactory $collectionFactory,
         JetTokenRepositoryInterface $jetTokenRepositoryInterface
     ){
         $this->clientFactory = $clientFactory;
         $this->responseFactory = $responseFactory;
         $this->scopeConfig = $scopeConfig;
         $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
+        $this->collectionFactory = $collectionFactory;
+    }
+
+    public function allProductByCategory()
+    {
+        $categories = [3];//category ids array
+        $collection = $this->collectionFactory->create();
+        $collection->addAttributeToSelect('*');
+        $collection->addCategoriesFilter(['in' => $categories]);
+
+        return $collection;
     }
 
     public function getSaveToken()
