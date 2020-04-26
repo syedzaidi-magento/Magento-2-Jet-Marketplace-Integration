@@ -33,7 +33,12 @@ class JetApiCall
     const SECRET_KEY = 'general/jet_integration_settings/secret_key';
 
     /**
-     * API fulfillment node id
+     * CATEGORY id
+     */
+    const CATEGORY_ID = 'general/jet_integration_settings/category_id';
+
+    /**
+     * API browse node id
      */
     const JET_BROWSE_NODE_ID = 'general/jet_integration_settings/jet_browse_node_id';
 
@@ -94,9 +99,8 @@ class JetApiCall
 
     public function allProductByCategory()
     {
-        $categories = [3];//category ids array
+        $categories = $this->scopeConfig->getValue(self::CATEGORY_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
         $nodeId = $this->scopeConfig->getValue(self::JET_BROWSE_NODE_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
-
         $collection = $this->collectionFactory->create();
         $collection->addAttributeToSelect('*');
         $collection->addCategoriesFilter(['in' => $categories]);
