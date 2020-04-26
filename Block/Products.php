@@ -69,10 +69,13 @@ class Products extends Template
 
     public function sendCatalogToJet()
     {
-        foreach ($this->jetApiCall->allProductByCategory() as $item){
-           echo "<pre>";
-           print_r($item);
-       }
+        $this->jetApiCall->setNewSaveToken();
+        foreach ($this->jetApiCall->allProductByCategory() as $item) {
+            $params = ["json" => $item];
+            $response = $this->jetApiCall->sendRequest("api/merchant-skus/" . $item['mfr_part_number'], $params, Request::HTTP_METHOD_PUT);
+            $status = $response->getStatusCode(); // 200 status code
+            echo $item['product_title'] . " - Status: " . $status . "<br >";
+        }
     }
 
     public function getSingleSku($sku)
@@ -91,11 +94,9 @@ class Products extends Template
 
     public function getProducts()
     {
-        $sku_list = ['my-12345-product', 'abc-1234-asdf', 'my-12345-product', 'my-12345-product', 'abc-1234-asdf'];
-
         $products = [];
-        foreach ($sku_list as $sku) {
-            array_push($products,  $this->getSingleSku($sku) ?: ['sku_not_found' => $sku]);
+        foreach ($this->jetApiCall->allProductByCategory() as $sku) {
+            array_push($products, $this->getSingleSku($sku["mfr_part_number"]) ?: ['sku_not_found' => $sku]);
         }
 
         return $products;

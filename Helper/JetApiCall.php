@@ -97,12 +97,11 @@ class JetApiCall
         $productData = [];
         foreach ($collection as $product){
             $productDataSet = [
-                'product_title' => $product->getName(),
-                'mfr_part_number' => $product->getSku(),
-                'standard_product_codes' => [
-                    'standard_product_code' => $product->getUpc(),
-                    'standard_product_code_type' => "UPC"
-                ],
+                "product_title" => $product->getName(),
+                "product_description" => $product->getDescription(),
+                "mfr_part_number" => $product->getSku(),
+                "ASIN" => $product->getAsin(),
+                "jet_browse_node_id" => 14000009,
                 "multipack_quantity" => 6,
                 "brand" => $product->getBrand(),
                 "main_image_url" => $this->urlInterface->getBaseUrl() . substr($product->getImage(), 1),
@@ -174,7 +173,7 @@ class JetApiCall
             'base_uri' => self::API_REQUEST_URI
         ]]);
         try {
-            $params = array_merge($params, ['headers' => ['Content-type' => 'application/json', 'Authorization' => $this->getSaveToken()]]);
+            $params = array_merge($params, ['headers' => ['Content-type' => 'application/json', 'charset' => "UTF-8", 'Authorization' => $this->getSaveToken()]]);
             $response = $client->request(
                 $requestMethod,
                 $uriEndpoint,
