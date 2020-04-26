@@ -35,6 +35,11 @@ class JetApiCall
     /**
      * API fulfillment node id
      */
+    const JET_BROWSE_NODE_ID = 'general/jet_integration_settings/jet_browse_node_id';
+
+    /**
+     * API fulfillment node id
+     */
     const FULFILLMENT_NODE_KEY = 'general/jet_integration_settings/fulfillment_node_id';
 
     /**
@@ -90,6 +95,8 @@ class JetApiCall
     public function allProductByCategory()
     {
         $categories = [3];//category ids array
+        $nodeId = $this->scopeConfig->getValue(self::JET_BROWSE_NODE_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
+
         $collection = $this->collectionFactory->create();
         $collection->addAttributeToSelect('*');
         $collection->addCategoriesFilter(['in' => $categories]);
@@ -101,7 +108,7 @@ class JetApiCall
                 "product_description" => $product->getDescription(),
                 "mfr_part_number" => $product->getSku(),
                 "ASIN" => $product->getAsin(),
-                "jet_browse_node_id" => 14000009,
+                "jet_browse_node_id" => intval($nodeId),
                 "multipack_quantity" => 6,
                 "brand" => $product->getBrand(),
                 "main_image_url" => $this->urlInterface->getBaseUrl() . substr($product->getImage(), 1),

@@ -19,6 +19,14 @@
                         <label>Merchant Id</label>
                         <comment>Add jet market place merchant id here.</comment>
                     </field>
+                    <field id="category_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Category Id</label>
+                        <comment>Add store category id here.</comment>
+                    </field>
+                    <field id="jet_browse_node_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Jet Browse Node Id</label>
+                        <comment>Add jet brows node id here.</comment>
+                    </field>
                     <field id="fulfillment_node_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Fulfillment Node Id</label>
                         <comment>Add jet market place fulfillment node id here.</comment>
