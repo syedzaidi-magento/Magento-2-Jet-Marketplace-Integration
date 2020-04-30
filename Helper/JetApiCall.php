@@ -155,7 +155,7 @@ class JetApiCall
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
         // Add your logic using $responseContent
         if ($status === 401) {
-            $this->setNewSaveToken();
+            $this->setNewSaveToken(); // create new token if it expire
             return "$status Not authorized. Please regenerate token";
         }
         return json_decode($responseContent);
