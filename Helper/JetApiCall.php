@@ -163,9 +163,14 @@ class JetApiCall
     {
         foreach ($this->allProductByCategory() as $item) {
             $singleItem = (array)$this->getSingleSku($item["mfr_part_number"]);
+
             $jet_product = $this->jetProductFactory->create();
             $jet_product->load($item["mfr_part_number"], "merchant_sku");
             $jet_product->setMerchantSku($singleItem['merchant_sku']);
+            $lastUpdate = isset($singleItem['sku_last_update']) ? $singleItem['sku_last_update'] : "N/A";
+            $jet_product->setSkuLastUpdate($lastUpdate);
+            $createdDate = isset($singleItem['sku_created_date']) ? $singleItem['sku_created_date'] : "N/A";
+            $jet_product->setSkuCreatedDate($createdDate);
             $jet_product->setStatus($singleItem['status']);
             $jet_product->save();
         }
