@@ -163,7 +163,6 @@ class JetApiCall
     {
         foreach ($this->allProductByCategory() as $item) {
             $singleItem = (array)$this->getSingleSku($item["mfr_part_number"]);
-
             $jet_product = $this->jetProductFactory->create();
             $jet_product->load($item["mfr_part_number"], "merchant_sku");
             $jet_product->setMerchantSku($singleItem['merchant_sku']);
