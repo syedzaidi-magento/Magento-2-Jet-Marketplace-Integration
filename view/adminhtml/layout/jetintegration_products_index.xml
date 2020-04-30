@@ -5,6 +5,7 @@
         <referenceContainer name="content">
             <block name="jetintegration.products" class="Syedzaidi\JetIntegration\Block\Products"
                    template="Syedzaidi_JetIntegration::products/index.phtml"/>
+            <uiComponent name="jet_product_listing"/>
         </referenceContainer>
     </body>
 </page>
