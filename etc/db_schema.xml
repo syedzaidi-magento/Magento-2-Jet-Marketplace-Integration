@@ -7,4 +7,15 @@
         <column xsi:type="timestamp" name="time_occurred" comment="Time of event"/>
         <column xsi:type="datetime" name="expires_on" on_update="true" nullable="true" comment="expires on"/>
     </table>
+    <table name="jet_integration_product" resource="default" engine="innodb"
+           comment="jet marketplace integration product table">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="true" comment="jet product Id"/>
+        <column xsi:type="varchar" name="merchant_sku" nullable="false" comment="jet product merchant sku" />
+        <column xsi:type="varchar" name="status" nullable="false" comment="jet product status" />
+        <column xsi:type="timestamp" name="time_occurred" comment="Time of event"/>
+        <column xsi:type="datetime" name="expires_on" on_update="true" nullable="true" comment="expires on"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+        </constraint>
+    </table>
 </schema>
