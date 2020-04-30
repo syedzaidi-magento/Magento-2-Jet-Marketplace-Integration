@@ -35,18 +35,25 @@
             </settings>
         </dataProvider>
     </dataSource>
-    <listingToolbar name="listing_top">
+    <listingToolbar name="jet_listing_top">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="sticky" xsi:type="boolean">true</item>
             </item>
         </argument>
-        <bookmark name="bookmarks"/>
-        <columnsControls name="columns_controls"/>
-        <filterSearch name="fulltext"/>
-        <filters name="listing_filters" />
-        <paging name="listing_paging"/>
-        <exportButton name="export_button"/>
+
+        <bookmark name="jet_bookmarks"/>
+
+        <columnsControls name="jet_columns_controls"/>
+
+        <filterSearch name="jet_fulltext"/>
+
+        <filters name="jet_listing_filters" />
+
+        <paging name="jet_listing_paging"/>
+
+        <exportButton name="jet_export_button"/>
+
     </listingToolbar>
     <columns name="jet_product_columns">
         <column name="product_id">
