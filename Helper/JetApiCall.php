@@ -14,6 +14,8 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
+use Syedzaidi\JetIntegration\Model\JetProductFactory;
+
 
 class JetApiCall
 {
@@ -71,6 +73,10 @@ class JetApiCall
      * @var UrlInterface
      */
     private $urlInterface;
+    /**
+     * @var JetProductFactory
+     */
+    private $jetProductFactory;
 
     /**
      * JetApiCall constructor.
@@ -79,6 +85,7 @@ class JetApiCall
      * @param ScopeConfigInterface $scopeConfig
      * @param CollectionFactory $collectionFactory
      * @param UrlInterface $urlInterface
+     * @param JetProductFactory $jetProductFactory
      * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
      */
     public function __construct(
@@ -87,6 +94,7 @@ class JetApiCall
         ScopeConfigInterface $scopeConfig,
         CollectionFactory $collectionFactory,
         UrlInterface $urlInterface,
+        JetProductFactory $jetProductFactory,
         JetTokenRepositoryInterface $jetTokenRepositoryInterface
     ){
         $this->clientFactory = $clientFactory;
@@ -95,6 +103,7 @@ class JetApiCall
         $this->jetTokenRepositoryInterface = $jetTokenRepositoryInterface;
         $this->collectionFactory = $collectionFactory;
         $this->urlInterface = $urlInterface;
+        $this->jetProductFactory = $jetProductFactory;
     }
 
     public function allProductByCategory()
@@ -133,6 +142,33 @@ class JetApiCall
     {
         $new_token = "Bearer " . $this->getToken();
         return $this->jetTokenRepositoryInterface->setNewToken($new_token);
+    }
+
+    public function getSingleSku($sku)
+    {
+        $response = $this->sendRequest("https://merchant-api.jet.com/api/merchant-skus/" . $sku, [], "GET");
+        //$response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . $sku, [], Request::METHOD_GET);
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        // Add your logic using $responseContent
+        if ($status === 401) {
+            $this->setNewSaveToken();
+            return "$status Not authorized. Please regenerate token";
+        }
+        return json_decode($responseContent);
+    }
+
+    public function saveJetProducts()
+    {
+        foreach ($this->allProductByCategory() as $item) {
+            $singleItem = (array)$this->getSingleSku($item["mfr_part_number"]);
+            $jet_product = $this->jetProductFactory->create();
+            $jet_product->load($item["mfr_part_number"], "merchant_sku");
+            $jet_product->setMerchantSku($singleItem['merchant_sku']);
+            $jet_product->setStatus($singleItem['status']);
+            $jet_product->save();
+        }
     }
 
     public function getToken()
