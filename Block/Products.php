@@ -69,7 +69,6 @@ class Products extends Template
             $params = ["json" => $item];
             $response = $this->jetApiCall->sendRequest("api/merchant-skus/" . $item['mfr_part_number'], $params, Request::HTTP_METHOD_PUT);
             $status = $response->getStatusCode(); // 200 status code
-            echo $item['product_title'] . " - Status: " . $status . "<br >";
         }
         $this->jetApiCall->saveJetProducts();
     }
