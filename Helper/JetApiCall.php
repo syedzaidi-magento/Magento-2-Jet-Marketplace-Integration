@@ -23,7 +23,10 @@ class JetApiCall
      * API request URL
      */
     const API_REQUEST_URI = 'https://merchant-api.jet.com/';
-
+    /**
+     * API request endpoint
+     */
+    const API_REQUEST_ENDPOINT = 'api/merchant-skus/';
     /**
      * API user key
      */
@@ -146,8 +149,7 @@ class JetApiCall
 
     public function getSingleSku($sku)
     {
-        $response = $this->sendRequest("https://merchant-api.jet.com/api/merchant-skus/" . $sku, [], "GET");
-        //$response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . $sku, [], Request::METHOD_GET);
+        $response = $this->sendRequest(static::API_REQUEST_ENDPOINT . $sku, [], Request::METHOD_GET);
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format

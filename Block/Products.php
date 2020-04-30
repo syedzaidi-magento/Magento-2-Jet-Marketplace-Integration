@@ -14,11 +14,6 @@ use Syedzaidi\JetIntegration\Helper\JetApiCall;
 class Products extends Template
 {
     /**
-     * API request endpoint
-     */
-    const API_REQUEST_ENDPOINT = 'api/merchant-skus/';
-
-    /**
      * @var JetApiCall
      */
     private $jetApiCall;
