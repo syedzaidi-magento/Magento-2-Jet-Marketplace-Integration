@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Webapi\Rest\Request;
@@ -80,6 +81,10 @@ class JetApiCall
      * @var JetProductFactory
      */
     private $jetProductFactory;
+    /**
+     * @var StockRegistryInterface
+     */
+    private $stockRegistry;
 
     /**
      * JetApiCall constructor.
@@ -89,6 +94,7 @@ class JetApiCall
      * @param CollectionFactory $collectionFactory
      * @param UrlInterface $urlInterface
      * @param JetProductFactory $jetProductFactory
+     * @param StockRegistryInterface $stockRegistry
      * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
      */
     public function __construct(
@@ -98,6 +104,7 @@ class JetApiCall
         CollectionFactory $collectionFactory,
         UrlInterface $urlInterface,
         JetProductFactory $jetProductFactory,
+        StockRegistryInterface $stockRegistry,
         JetTokenRepositoryInterface $jetTokenRepositoryInterface
     ){
         $this->clientFactory = $clientFactory;
@@ -107,18 +114,24 @@ class JetApiCall
         $this->collectionFactory = $collectionFactory;
         $this->urlInterface = $urlInterface;
         $this->jetProductFactory = $jetProductFactory;
+        $this->stockRegistry = $stockRegistry;
     }
 
     public function allProductByCategory()
     {
         $categories = $this->scopeConfig->getValue(self::CATEGORY_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
-        $nodeId = $this->scopeConfig->getValue(self::JET_BROWSE_NODE_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
         $collection = $this->collectionFactory->create();
         $collection->addAttributeToSelect('*');
         $collection->addCategoriesFilter(['in' => $categories]);
 
+        return $collection;
+    }
+
+    public function jetProductData()
+    {
+        $nodeId = $this->scopeConfig->getValue(self::JET_BROWSE_NODE_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
         $productData = [];
-        foreach ($collection as $product){
+        foreach ($this->allProductByCategory() as $product){
             $productDataSet = [
                 "product_title" => $product->getName(),
                 "product_description" => $product->getDescription(),
@@ -133,6 +146,30 @@ class JetApiCall
 
         }
         return $productData;
+    }
+
+    public function jetInventoryData()
+    {
+        $fulfillment_id = $this->scopeConfig->getValue(self::FULFILLMENT_NODE_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
+        $inventoryData = [];
+        foreach ($this->allProductByCategory() as $product){
+            $product_qty = $this->stockRegistry->getStockItemBySku($product->getSku());
+            $inventoryDataSet = [
+                "inventory" =>
+                [
+                    "fulfillment_nodes" => [
+                        [
+                            'fulfillment_node_id' => $fulfillment_id,
+                            'quantity' => $product_qty->getQty()
+                        ],
+                    ]
+                ],
+                "sku" => $product->getSku()
+            ];
+            array_push($inventoryData,  $inventoryDataSet);
+
+        }
+        return $inventoryData;
     }
 
     public function getSaveToken()
@@ -163,7 +200,7 @@ class JetApiCall
 
     public function saveJetProducts()
     {
-        foreach ($this->allProductByCategory() as $item) {
+        foreach ($this->jetProductData() as $item) {
             $singleItem = (array)$this->getSingleSku($item["mfr_part_number"]);
             $jet_product = $this->jetProductFactory->create();
             $jet_product->load($item["mfr_part_number"], "merchant_sku");
