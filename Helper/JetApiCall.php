@@ -164,7 +164,8 @@ class JetApiCall
                         ],
                     ]
                 ],
-                "sku" => $product->getSku()
+                "sku" => $product->getSku(),
+                "price" => floatval($product->getPrice()),
             ];
             array_push($inventoryData,  $inventoryDataSet);
 

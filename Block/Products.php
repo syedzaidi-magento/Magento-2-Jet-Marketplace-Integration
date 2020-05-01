@@ -69,6 +69,7 @@ class Products extends Template
             $params = ["json" => $item];
             $response = $this->jetApiCall->sendRequest("api/merchant-skus/" . $item['mfr_part_number'], $params, Request::HTTP_METHOD_PUT);
             $status = $response->getStatusCode(); // 200 status code
+            echo $status;
         }
         $this->jetApiCall->saveJetProducts();
     }
@@ -79,8 +80,18 @@ class Products extends Template
             $params = ["json" => $item['inventory']];
             $response = $this->jetApiCall->sendRequest("api/merchant-skus/" . $item['sku'] . "/inventory", $params, "PATCH");
             $status = $response->getStatusCode(); // 200 status code
+            echo $status;
         }
-        $this->jetApiCall->saveJetProducts();
+    }
+
+    public function sendPriceToJet()
+    {
+        foreach ($this->jetApiCall->jetInventoryData() as $item) {
+            $params = ["json" => ['price' => $item['price']]];
+            $response = $this->jetApiCall->sendRequest("api/merchant-skus/" . $item['sku'] . "/price", $params, "PUT");
+            $status = $response->getStatusCode(); // 200 status code
+            echo $status;
+        }
     }
 
     public function getProducts()
