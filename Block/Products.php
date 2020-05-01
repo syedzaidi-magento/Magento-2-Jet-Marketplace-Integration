@@ -83,7 +83,6 @@ class Products extends Template
         $this->jetApiCall->saveJetProducts();
     }
 
-
     public function getProducts()
     {
         $products = [];
