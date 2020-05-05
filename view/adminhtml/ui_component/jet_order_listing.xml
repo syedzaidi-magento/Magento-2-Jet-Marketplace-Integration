@@ -9,9 +9,9 @@
     <settings>
         <buttons>
             <button name="add">
-                <url path="*/*/new"/>
+                <url path="*/*/"/>
                 <class>primary</class>
-                <label translate="true">Add New Page</label>
+                <label translate="true">Refresh Data</label>
             </button>
         </buttons>
         <spinner>jet_order_columns</spinner>
