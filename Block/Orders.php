@@ -35,6 +35,18 @@ class Orders extends Template
         $this->jetApiCall = $jetApiCall;
     }
 
+    public function jetOrderList()
+    {
+        $orderList = $this->ordersByTagged("ready", "");
+        //var_dump($orderList->order_urls);
+        $orderData = [];
+        foreach ($orderList->order_urls as $order_url) {
+            $orderId = substr("$order_url", 30);
+            array_push($orderData, $this->ordersDetails($orderId));
+        }
+        return $orderData;
+    }
+
     public function ordersByStatus($byStatus)
     {
         $fullfillment = $this->jetApiCall->fulfillmentNodeId();
@@ -58,13 +70,6 @@ class Orders extends Template
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
-        // Add your logic using $responseContent
-        if ($status === 401) {
-            $this->jetApiCall->setNewSaveToken();
-            return "$status Not authorized. Please regenerate token";
-        }
-        echo "<pre>";
-        print_r($responseContent);
         return json_decode($responseContent);
     }
 
@@ -74,13 +79,6 @@ class Orders extends Template
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
-        // Add your logic using $responseContent
-        if ($status === 401) {
-            $this->jetApiCall->setNewSaveToken();
-            return "$status Not authorized. Please regenerate token";
-        }
-        echo "<pre>";
-        print_r($responseContent);
         return json_decode($responseContent);
     }
 }

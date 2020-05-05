@@ -20,4 +20,18 @@
             <column name="product_id"/>
         </constraint>
     </table>
+
+    <table name="jet_integration_order" resource="default" engine="innodb"
+           comment="jet marketplace integration order table">
+        <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" identity="true" comment="jet order Id"/>
+        <column xsi:type="varchar" name="alt_order_id" nullable="false" comment="jet alt order id" />
+        <column xsi:type="varchar" name="name" nullable="false" comment="jet buyer name" />
+        <column xsi:type="varchar" name="phone_number" nullable="false" comment="jet buyer phone" />
+        <column xsi:type="varchar" name="hash_email" nullable="false" comment="jet buyer email" />
+        <column xsi:type="varchar" name="order_placed_date" nullable="false" comment="jet order placed date" />
+        <column xsi:type="varchar" name="status" nullable="false" comment="jet order status" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="order_id"/>
+        </constraint>
+    </table>
 </schema>
