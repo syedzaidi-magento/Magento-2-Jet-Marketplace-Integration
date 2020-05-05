@@ -19,7 +19,6 @@
             <dep>jet_order_listing.jet_order_listing_data_source</dep>
         </deps>
     </settings>
-
     <dataSource name="jet_order_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <storageConfig>
@@ -41,19 +40,12 @@
                 <item name="sticky" xsi:type="boolean">true</item>
             </item>
         </argument>
-
         <bookmark name="jet_bookmarks"/>
-
         <columnsControls name="jet_columns_controls"/>
-
         <filterSearch name="jet_fulltext"/>
-
         <filters name="jet_listing_filters" />
-
         <paging name="listing_paging"/>
-
         <exportButton name="jet_export_button"/>
-
     </listingToolbar>
     <columns name="jet_order_columns">
         <column name="order_id">
