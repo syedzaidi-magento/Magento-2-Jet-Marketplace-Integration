@@ -3,6 +3,7 @@
     <body>
         <referenceContainer name="content">
             <block name="jetintegration.orders" class="Syedzaidi\JetIntegration\Block\Orders" template="Syedzaidi_JetIntegration::orders/index.phtml"/>
+            <uiComponent name="jet_order_listing"/>
         </referenceContainer>
     </body>
 </page>
