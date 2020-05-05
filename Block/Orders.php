@@ -37,14 +37,7 @@ class Orders extends Template
 
     public function jetOrderList()
     {
-        $orderList = $this->ordersByTagged("ready", "");
-        //var_dump($orderList->order_urls);
-        $orderData = [];
-        foreach ($orderList->order_urls as $order_url) {
-            $orderId = substr("$order_url", 30);
-            array_push($orderData, $this->ordersDetails($orderId));
-        }
-        return $orderData;
+        $this->jetApiCall->saveJetOrders();
     }
 
     public function ordersByStatus($byStatus)
@@ -61,24 +54,6 @@ class Orders extends Template
         }
         echo "<pre>";
         print_r($responseContent);
-        return json_decode($responseContent);
-    }
-
-    public function ordersByTagged($byStatus, $tag)
-    {
-        $response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . $byStatus . "/" . $tag, [], Request::METHOD_GET);
-        $status = $response->getStatusCode(); // 200 status code
-        $responseBody = $response->getBody();
-        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
-        return json_decode($responseContent);
-    }
-
-    public function ordersDetails($jetDefinedOrderId)
-    {
-        $response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . "withoutShipmentDetail/" . $jetDefinedOrderId, [], "Get");
-        $status = $response->getStatusCode(); // 200 status code
-        $responseBody = $response->getBody();
-        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
         return json_decode($responseContent);
     }
 }

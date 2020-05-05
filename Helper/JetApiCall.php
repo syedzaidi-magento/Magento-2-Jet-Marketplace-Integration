@@ -15,6 +15,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
+use Syedzaidi\JetIntegration\Model\JetOrderFactory;
 use Syedzaidi\JetIntegration\Model\JetProductFactory;
 
 
@@ -85,6 +86,10 @@ class JetApiCall
      * @var StockRegistryInterface
      */
     private $stockRegistry;
+    /**
+     * @var JetOrderFactory
+     */
+    private $jetOrderFactory;
 
     /**
      * JetApiCall constructor.
@@ -94,6 +99,7 @@ class JetApiCall
      * @param CollectionFactory $collectionFactory
      * @param UrlInterface $urlInterface
      * @param JetProductFactory $jetProductFactory
+     * @param JetOrderFactory $jetOrderFactory
      * @param StockRegistryInterface $stockRegistry
      * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
      */
@@ -104,6 +110,7 @@ class JetApiCall
         CollectionFactory $collectionFactory,
         UrlInterface $urlInterface,
         JetProductFactory $jetProductFactory,
+        JetOrderFactory $jetOrderFactory,
         StockRegistryInterface $stockRegistry,
         JetTokenRepositoryInterface $jetTokenRepositoryInterface
     ){
@@ -115,6 +122,7 @@ class JetApiCall
         $this->urlInterface = $urlInterface;
         $this->jetProductFactory = $jetProductFactory;
         $this->stockRegistry = $stockRegistry;
+        $this->jetOrderFactory = $jetOrderFactory;
     }
 
     public function allProductByCategory()
@@ -199,6 +207,36 @@ class JetApiCall
         return json_decode($responseContent);
     }
 
+    public function jetOrderData()
+    {
+        $orderList = $this->ordersByTagged("ready", "");
+        //print_r($orderList->order_urls);
+        $orderData = [];
+        foreach ($orderList->order_urls as $order_url) {
+            $orderId = substr("$order_url", 30);
+            array_push($orderData, $this->ordersDetails($orderId));
+        }
+        return $orderData;
+    }
+
+    public function ordersByTagged($byStatus, $tag)
+    {
+        $response = $this->sendRequest("api/orders/" . $byStatus . "/" . $tag, [], Request::METHOD_GET);
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        return json_decode($responseContent);
+    }
+
+    public function ordersDetails($jetDefinedOrderId)
+    {
+        $response = $this->sendRequest("api/orders/" . "withoutShipmentDetail/" . $jetDefinedOrderId, [], "Get");
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        return json_decode($responseContent);
+    }
+
     public function saveJetProducts()
     {
         foreach ($this->jetProductData() as $item) {
@@ -213,6 +251,21 @@ class JetApiCall
             $jet_product->setStatus($singleItem['status']);
             $jet_product->save();
         }
+    }
+
+    public function saveJetOrders()
+    {
+        foreach ($this->jetOrderData() as $order) {
+            $jet_order = $this->jetOrderFactory->create();
+            $jet_order->load($order->alt_order_id, "alt_order_id");
+            $jet_order->setAltOrderId($order->alt_order_id);
+            $jet_order->setName($order->buyer->name);
+            $jet_order->setPhoneNumber($order->buyer->phone_number);
+            $jet_order->setHashEmail($order->hash_email);
+            $jet_order->setOrderPlacedDate($order->order_placed_date);
+            $jet_order->setStatus($order->status);
+            $jet_order->save();
+      }
     }
 
     public function getToken()
