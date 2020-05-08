@@ -37,6 +37,7 @@ class Orders extends Template
 
     public function jetOrderList()
     {
+        $this->jetApiCall->setNewSaveToken();
         $this->jetApiCall->saveJetOrders();
     }
 

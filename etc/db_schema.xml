@@ -30,6 +30,7 @@
         <column xsi:type="varchar" name="hash_email" nullable="false" comment="jet buyer email" />
         <column xsi:type="varchar" name="order_placed_date" nullable="false" comment="jet order placed date" />
         <column xsi:type="varchar" name="status" nullable="false" comment="jet order status" />
+        <column xsi:type="varchar" name="tracking_number" nullable="false" comment="jet order tracking number" />
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="order_id"/>
         </constraint>
