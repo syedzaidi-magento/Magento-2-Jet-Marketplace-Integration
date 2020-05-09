@@ -52,7 +52,6 @@ class DataProvider extends AbstractDataProvider implements DataProviderInterface
             $this->_loadedData[$employee->getOrderId()] = $employee->getData();
         }
         return $this->_loadedData;
-
     }
 
     /**
