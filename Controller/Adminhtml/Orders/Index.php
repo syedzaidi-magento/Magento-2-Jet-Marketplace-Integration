@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Syedzaidi\JetIntegration\Controller\Adminhtml\Orders;
 
 use Magento\Backend\App\Action;
