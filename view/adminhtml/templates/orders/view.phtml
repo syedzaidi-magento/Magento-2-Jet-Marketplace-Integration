@@ -1,0 +1,25 @@
+<?php
+
+/** @var OrderView $block */
+
+use Syedzaidi\JetIntegration\Block\OrderView;
+
+
+echo <<<TAG
+<div data-mage-init='{
+    "collapsible":{
+        "collapsible": true,
+        "openedState": "active",
+        "active": false
+    }}' class="fieldset-wrapper admin__collapsible-block-wrapper">
+    <div data-role="title" class="admin__collapsible-title">
+        <h4>Current Raw Jet Data</h4>
+    </div>
+    <div data-role="content">
+TAG;
+echo "<pre>";
+echo print_r($block->jetOrderView());
+echo "</pre>";
+echo "</div></div>";
+
+
