@@ -13,12 +13,24 @@ echo <<<TAG
         "active": false
     }}' class="fieldset-wrapper admin__collapsible-block-wrapper">
     <div data-role="title" class="admin__collapsible-title">
-        <h4>Current Raw Jet Data</h4>
+        <h4>Current Row Jet Data</h4>
     </div>
     <div data-role="content">
 TAG;
+
+$singleorder = $block->jetOrderView();
+echo $singleorder['jet_request_directed_cancel'];
+
+if ($singleorder['jet_request_directed_cancel'] === true) {
+    echo "order is canceled";
+}
+
+//echo $singleorder['buyer']->name;
+echo "<br>";
+
+
 echo "<pre>";
-echo print_r($block->jetOrderView());
+print_r($block->jetOrderView());
 echo "</pre>";
 echo "</div></div>";
 
