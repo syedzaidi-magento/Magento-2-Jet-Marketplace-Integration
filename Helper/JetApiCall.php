@@ -181,6 +181,38 @@ class JetApiCall
         return $inventoryData;
     }
 
+    public function jetAddTrackingNumber(
+        $altOrderId,
+        $trackingNumber,
+        $responseShipmentDate,
+        $responseShipmentMethod,
+        $expectedDeliveryDate,
+        $shipFromZipCode,
+        $carrierPickUpDate,
+        $carrier,
+        $merchantSku
+    ){
+        $trackingData = [
+            "shipments" =>
+                [
+                    "alt_shipment_id" => $altOrderId,
+                    "shipment_tracking_number" => $trackingNumber,
+                    "response_shipment_date" => $responseShipmentDate,
+                    "response_shipment_method" => $responseShipmentMethod,
+                    "expected_delivery_date" => $expectedDeliveryDate,
+                    "ship_from_zip_code" => $shipFromZipCode,
+                    "carrier_pick_up_date" => $carrierPickUpDate,
+                    "carrier" => $carrier,
+                    "shipment_items" => [
+                        [
+                            'merchant_sku' => $merchantSku,
+                            'response_shipment_sku_quantity' => 1
+                        ],
+                    ]
+                ]
+        ];
+    }
+
     public function getSaveToken()
     {
         return $this->jetTokenRepositoryInterface->getTokenById(0);
