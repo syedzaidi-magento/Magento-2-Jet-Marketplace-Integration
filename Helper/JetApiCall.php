@@ -211,6 +211,7 @@ class JetApiCall
                     ]
                 ]
         ];
+        echo "tracking";
     }
 
     public function getSaveToken()
@@ -242,9 +243,13 @@ class JetApiCall
     public function jetOrderData()
     {
         $orderList = $this->ordersByTagged("ready", "");
-        //print_r($orderList->order_urls);
+        $orderListAcknowledged = $this->ordersByTagged("acknowledged", "");
         $orderData = [];
         foreach ($orderList->order_urls as $order_url) {
+            $orderId = substr("$order_url", 30);
+            array_push($orderData, $this->ordersDetails($orderId));
+        }
+        foreach ($orderListAcknowledged->order_urls as $order_url) {
             $orderId = substr("$order_url", 30);
             array_push($orderData, $this->ordersDetails($orderId));
         }
@@ -268,6 +273,17 @@ class JetApiCall
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
         return json_decode($responseContent);
     }
+
+    public function ordersByStatus($byStatus, $isCancelled)
+    {
+        $fullfillment = "?isCancelled=$isCancelled" . $this->fulfillmentNodeId();
+        $response = $this->sendRequest("api/orders/" . $byStatus . $fullfillment, $parram = [], "GET");
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        return json_decode($responseContent);
+    }
+
 
     public function saveJetProducts()
     {
@@ -297,7 +313,33 @@ class JetApiCall
             $jet_order->setOrderPlacedDate($order->order_placed_date);
             $jet_order->setStatus($order->status);
             $jet_order->save();
-      }
+        }
+    }
+
+    public function jetOrderAcknowledge()
+    {
+        foreach ($this->jetOrderData() as $order) {
+            $altOrderId = $order->alt_order_id;
+            $jetDefinedOrderId = $order->merchant_order_id;
+            $orderItems = (array) $order->order_items[0];
+            $orderItemId = $orderItems['order_item_id'];
+            if ($order->status === "ready" && $order->jet_request_directed_cancel === false) {
+                $acknowledgeData = [
+                    "json" => [
+                        "acknowledgement_status" => "accepted",
+                        "alt_order_id" => $altOrderId,
+                        "order_items" => [
+                            [
+                                'order_item_acknowledgement_status' => "fulfillable",
+                                'order_item_id' => $orderItemId
+                            ]
+                        ]
+                    ]
+                ];
+                $this->sendRequest("api/orders/" . $jetDefinedOrderId . "/acknowledge", $acknowledgeData, "Put");
+            }
+        }
+        return null;
     }
 
     public function getToken()

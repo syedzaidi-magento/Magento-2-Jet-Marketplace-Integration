@@ -11,11 +11,6 @@ use Syedzaidi\JetIntegration\Helper\JetApiCall;
 class Orders extends Template
 {
     /**
-     * API request endpoint
-     */
-    const API_REQUEST_ENDPOINT = 'api/orders/';
-
-    /**
      * @var JetApiCall
      */
     private $jetApiCall;
@@ -39,22 +34,7 @@ class Orders extends Template
     {
         $this->jetApiCall->setNewSaveToken();
         $this->jetApiCall->saveJetOrders();
-    }
+        $this->jetApiCall->jetOrderAcknowledge();
 
-    public function ordersByStatus($byStatus)
-    {
-        $fullfillment = $this->jetApiCall->fulfillmentNodeId();
-        $response = $this->jetApiCall->sendRequest(static::API_REQUEST_ENDPOINT . $byStatus . $fullfillment, $parram = [], "GET");
-        $status = $response->getStatusCode(); // 200 status code
-        $responseBody = $response->getBody();
-        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
-        // Add your logic using $responseContent
-        if ($status === 401) {
-            $this->jetApiCall->setNewSaveToken();
-            return "$status Not authorized. Please regenerate token";
-        }
-        echo "<pre>";
-        print_r($responseContent);
-        return json_decode($responseContent);
     }
 }
