@@ -72,7 +72,7 @@ class Actions extends Column
                 if (isset($item['order_id'])) {
                     $item[$name]['edit'] = [
                         'href' => $this->urlBuilder->getUrl($this->editUrl, ['order_id' => $item['order_id']]),
-                        'label' => __('Edit'),
+                        'label' => __('Update'),
                         '__disableTmpl' => true,
                     ];
                 }

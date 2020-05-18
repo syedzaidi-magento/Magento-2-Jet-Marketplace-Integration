@@ -10,6 +10,8 @@
     <settings>
         <buttons>
             <button name="save" class="Syedzaidi\JetIntegration\Block\Adminhtml\Order\Edit\SaveButton"/>
+            <button name="cancel" class="Syedzaidi\JetIntegration\Block\Adminhtml\Order\Edit\CancelButton"/>
+            <button name="back" class="\Magento\Cms\Block\Adminhtml\Page\Edit\BackButton"/>
         </buttons>
         <namespace>jet_order_form</namespace>
         <dataScope>data</dataScope>
