@@ -19,19 +19,12 @@ echo <<<TAG
 TAG;
 
 $singleorder = $block->jetOrderView();
-echo $singleorder['jet_request_directed_cancel'];
-
 if ($singleorder['jet_request_directed_cancel'] === true) {
-    echo "order is canceled";
+    echo "<b>This order was canceled</b>";
 }
 
-//echo $singleorder['buyer']->name;
-echo "<br>";
+echo "<pre>".json_encode($singleorder, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)."</pre>";
 
-
-echo "<pre>";
-print_r($block->jetOrderView());
-echo "</pre>";
 echo "</div></div>";
 
 
