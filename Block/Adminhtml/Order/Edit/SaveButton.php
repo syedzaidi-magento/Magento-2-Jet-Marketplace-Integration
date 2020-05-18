@@ -10,7 +10,7 @@ class SaveButton implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => 'Update Order',
+            'label' => 'Add Tracking Number',
             'class' => 'save primary',
             'data_attribute' => [
                 'mage-init' => [

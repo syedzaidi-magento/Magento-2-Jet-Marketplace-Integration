@@ -31,6 +31,7 @@
         <column xsi:type="varchar" name="order_placed_date" nullable="false" comment="jet order placed date" />
         <column xsi:type="varchar" name="status" nullable="false" comment="jet order status" />
         <column xsi:type="varchar" name="tracking_number" nullable="false" comment="jet order tracking number" />
+        <column xsi:type="varchar" name="shipping_carrier" nullable="false" comment="jet order shipping carrier" />
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="order_id"/>
         </constraint>

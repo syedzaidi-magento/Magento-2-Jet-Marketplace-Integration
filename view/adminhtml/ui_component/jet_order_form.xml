@@ -130,5 +130,16 @@
                 </item>
             </argument>
         </field>
+        <field name="shipping_carrier">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Shipping Carrier</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">order</item>
+                    <item name="dataScope" xsi:type="string">shipping_carrier</item>
+                </item>
+            </argument>
+        </field>
     </fieldset>
 </form>

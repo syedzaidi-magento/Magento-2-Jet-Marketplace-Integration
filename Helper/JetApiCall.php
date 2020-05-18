@@ -244,12 +244,17 @@ class JetApiCall
     {
         $orderList = $this->ordersByTagged("ready", "");
         $orderListAcknowledged = $this->ordersByTagged("acknowledged", "");
+        $orderListComplete = $this->ordersByTagged("complete", "");
         $orderData = [];
         foreach ($orderList->order_urls as $order_url) {
             $orderId = substr("$order_url", 30);
             array_push($orderData, $this->ordersDetails($orderId));
         }
         foreach ($orderListAcknowledged->order_urls as $order_url) {
+            $orderId = substr("$order_url", 30);
+            array_push($orderData, $this->ordersDetails($orderId));
+        }
+        foreach ($orderListComplete->order_urls as $order_url) {
             $orderId = substr("$order_url", 30);
             array_push($orderData, $this->ordersDetails($orderId));
         }

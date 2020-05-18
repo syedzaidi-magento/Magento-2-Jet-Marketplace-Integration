@@ -57,42 +57,48 @@ class Save extends Action implements HttpPostActionInterface
         }
 
         // Call api here to add tracking number on Jet.....
+        $orderItems = (array) $singleOrder['order_items'][0];
+        $merchantSku = $orderItems['merchant_sku'];
+        $jetDefineOrderId = $singleOrder['merchant_order_id'];
+        $altOrderId = $data['alt_order_id'];
+        $trackingNumber = $data['tracking_number'];
+        $shippingCarrier = $data['shipping_carrier'];
+        $orderDate = date('Y-m-d\TH:i:s'. substr ( ( string ) microtime (), 1, 7 ) . 'Z-h:i');
         $trackingData = [
-            "alt_order_id" => "371306144113",
-            "shipments" =>
-                [
-                    "alt_shipment_id" => "123123",
-                    "shipment_tracking_number" => "1Z12342452342",
-                    //"response_shipment_date" => "2020-05-13T06:23:52.1325242Z",
-                    //"response_shipment_method" => "FedExGround",
-                    //"expected_delivery_date" => "2020-05-22T23:59:59.0000000Z",
-                    //"ship_from_zip_code" => "92802",
-                    //"carrier_pick_up_date" => "2020-05-20T23:59:59.0000000Z",
-                    //"carrier" => "FedEx",
-                    "shipment_items" => [
-                        [
-                            'alt_shipment_item_id' => "321212",
-                            'merchant_sku' => "my-12345-product",
-                            'response_shipment_sku_quantity' => 1
+            'json' => [
+                'alt_order_id' => $altOrderId,
+                'shipments' => [
+                    [
+                    'shipment_tracking_number' => $trackingNumber,
+                    'response_shipment_date' => $orderDate,
+                    'carrier' => $shippingCarrier,
+                    'shipment_items' => [
+                            [
+                                'alt_shipment_item_id' => $altOrderId,
+                                'merchant_sku' => $merchantSku,
+                                'response_shipment_sku_quantity' => 1,
+                            ],
                         ],
-                    ]
-                ]
+                    ],
+                ],
+            ]
         ];
-        echo "<pre>";
-        //print_r($data);
-        print_r($trackingData);
 
-        $response = $this->jetApiCall->sendRequest("api/orders/371306144113/shipped", $trackingData, "PUT");
-        $status = $response->getStatusCode();
-        //$responseBody = $response->getBody();
-        //$responseContent = $responseBody->getContents();
-        //$responseContent = json_decode($responseContent, true);
-        echo $status;
+        $response = $this->jetApiCall->sendRequest("api/orders/". $jetDefineOrderId . "/shipped", $trackingData, "PUT");
+        $status = $response->getStatusCode(); // 204 updated tracking information....
 
-        //$jet_order->setTrackingNumber($data['tracking_number']);
-        //$jet_order->save();
-        //$this->messageManager->addSuccessMessage(__('Tracking number updated.'));
-        //return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
+        if ($status === 204) {
+            $jet_order->setTrackingNumber($data['tracking_number']);
+            $jet_order->setShippingCarrier($data['shipping_carrier']);
+            $jet_order->save();
+            $this->messageManager->addSuccessMessage(__("Tracking number updated to Jet Marketplace and Magento Store. $status"));
+            return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
+        }
+
+        $this->messageManager->addErrorMessage(__("Tracking info is not update to Jet Marketplace. $status"));
+        return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
+
+
     }
 
 }
