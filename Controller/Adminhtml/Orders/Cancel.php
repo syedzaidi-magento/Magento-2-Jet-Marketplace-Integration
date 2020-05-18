@@ -103,8 +103,5 @@ class Cancel extends Action implements HttpPostActionInterface
 
         $this->messageManager->addErrorMessage(__("Order not cancel to Jet Marketplace. $status"));
         return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
-
-
-
     }
 }

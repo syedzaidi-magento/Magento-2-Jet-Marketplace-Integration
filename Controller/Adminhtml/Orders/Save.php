@@ -98,7 +98,6 @@ class Save extends Action implements HttpPostActionInterface
         $this->messageManager->addErrorMessage(__("Tracking info is not update to Jet Marketplace. $status"));
         return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
 
-
     }
 
 }

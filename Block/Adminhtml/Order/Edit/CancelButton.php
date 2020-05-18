@@ -40,7 +40,6 @@ class CancelButton extends GenericButton implements ButtonProviderInterface
     {
         try {
             return $this->context->getRequest()->getParam('order_id');
-
         } catch (NoSuchEntityException $e) {
         }
         return null;

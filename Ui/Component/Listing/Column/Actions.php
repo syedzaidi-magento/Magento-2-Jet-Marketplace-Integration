@@ -16,7 +16,6 @@ class Actions extends Column
 {
     /** Url path */
     const ORDER_URL_PATH_VIEW = 'jetintegration/orders/view';
-    const ORDER_URL_PATH_DELETE = 'jetintegration/orders/delete';
     /**
      * @var array
      */
@@ -89,7 +88,6 @@ class Actions extends Column
                 }
             }
         }
-
         return $dataSource;
     }
 
