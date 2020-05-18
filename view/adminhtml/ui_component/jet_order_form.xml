@@ -40,7 +40,7 @@
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="collapsible" xsi:type="boolean">true</item>
-                <item name="label" xsi:type="string" translate="true">Order Details</item>
+                <item name="label" xsi:type="string" translate="true">Update Tracking Information</item>
                 <item name="sortOrder" xsi:type="number">20</item>
             </item>
         </argument>
