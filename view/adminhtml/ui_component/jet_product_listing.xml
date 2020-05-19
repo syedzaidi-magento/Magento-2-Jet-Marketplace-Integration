@@ -91,5 +91,13 @@
                 <label translate="true">SKU last Update</label>
             </settings>
         </column>
+        <actionsColumn name="actions" class="Syedzaidi\JetIntegration\Ui\Component\Product\Column\Actions">
+            <settings>
+                <label translate="true">Actions</label>
+                <indexField>product_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
     </columns>
 </listing>
