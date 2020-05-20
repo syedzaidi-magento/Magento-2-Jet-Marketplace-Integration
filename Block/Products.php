@@ -98,7 +98,7 @@ class Products extends Template
     {
         $products = [];
         foreach ($this->jetApiCall->allProductByCategory() as $item) {
-            array_push($products, $this->getSingleSku($item["mfr_part_number"]) ?: ['sku_not_found' => $item["mfr_part_number"]]);
+            array_push($products, $this->jetApiCall->getSingleSku($item["mfr_part_number"]) ?: ['sku_not_found' => $item["mfr_part_number"]]);
         }
         return $products;
     }

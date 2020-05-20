@@ -56,9 +56,9 @@ class Actions extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 $name = $this->getData('name');
-                if (isset($item['product_id'])) {
+                if (isset($item['merchant_sku'])) {
                     $item[$name]['edit'] = [
-                        'href' => $this->urlBuilder->getUrl($this->editUrl, ['product_id' => $item['product_id']]),
+                        'href' => $this->urlBuilder->getUrl($this->editUrl, ['merchant_sku' => $item['merchant_sku']]),
                         'label' => __('View'),
                         '__disableTmpl' => true,
                     ];
