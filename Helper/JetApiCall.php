@@ -125,6 +125,9 @@ class JetApiCall
         $this->jetOrderFactory = $jetOrderFactory;
     }
 
+    /**
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
+     */
     public function allProductByCategory()
     {
         $categories = $this->scopeConfig->getValue(self::CATEGORY_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
@@ -135,6 +138,9 @@ class JetApiCall
         return $collection;
     }
 
+    /**
+     * @return array
+     */
     public function jetProductData()
     {
         $nodeId = $this->scopeConfig->getValue(self::JET_BROWSE_NODE_ID, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
@@ -156,6 +162,10 @@ class JetApiCall
         return $productData;
     }
 
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function jetInventoryData()
     {
         $fulfillment_id = $this->scopeConfig->getValue(self::FULFILLMENT_NODE_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
@@ -181,51 +191,29 @@ class JetApiCall
         return $inventoryData;
     }
 
-    public function jetAddTrackingNumber(
-        $altOrderId,
-        $trackingNumber,
-        $responseShipmentDate,
-        $responseShipmentMethod,
-        $expectedDeliveryDate,
-        $shipFromZipCode,
-        $carrierPickUpDate,
-        $carrier,
-        $merchantSku
-    ){
-        $trackingData = [
-            "shipments" =>
-                [
-                    "alt_shipment_id" => $altOrderId,
-                    "shipment_tracking_number" => $trackingNumber,
-                    "response_shipment_date" => $responseShipmentDate,
-                    "response_shipment_method" => $responseShipmentMethod,
-                    "expected_delivery_date" => $expectedDeliveryDate,
-                    "ship_from_zip_code" => $shipFromZipCode,
-                    "carrier_pick_up_date" => $carrierPickUpDate,
-                    "carrier" => $carrier,
-                    "shipment_items" => [
-                        [
-                            'merchant_sku' => $merchantSku,
-                            'response_shipment_sku_quantity' => 1
-                        ],
-                    ]
-                ]
-        ];
-        echo "tracking";
-    }
-
+    /**
+     * @return \Syedzaidi\JetIntegration\Api\Data\JetTokenInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getSaveToken()
     {
         return $this->jetTokenRepositoryInterface->getTokenById(0);
 
     }
 
+    /**
+     * @return mixed
+     */
     public function setNewSaveToken()
     {
         $new_token = "Bearer " . $this->getToken();
         return $this->jetTokenRepositoryInterface->setNewToken($new_token);
     }
 
+    /**
+     * @param $sku
+     * @return mixed|string
+     */
     public function getSingleSku($sku)
     {
         $response = $this->sendRequest(static::API_REQUEST_ENDPOINT . $sku, [], Request::METHOD_GET);
@@ -240,6 +228,9 @@ class JetApiCall
         return json_decode($responseContent);
     }
 
+    /**
+     * @return array
+     */
     public function jetOrderData()
     {
         $orderList = $this->ordersByTagged("ready", "");
@@ -261,6 +252,11 @@ class JetApiCall
         return $orderData;
     }
 
+    /**
+     * @param $byStatus
+     * @param $tag
+     * @return mixed
+     */
     public function ordersByTagged($byStatus, $tag)
     {
         $response = $this->sendRequest("api/orders/" . $byStatus . "/" . $tag, [], Request::METHOD_GET);
@@ -270,6 +266,10 @@ class JetApiCall
         return json_decode($responseContent);
     }
 
+    /**
+     * @param $jetDefinedOrderId
+     * @return mixed
+     */
     public function ordersDetails($jetDefinedOrderId)
     {
         $response = $this->sendRequest("api/orders/" . "withoutShipmentDetail/" . $jetDefinedOrderId, [], "Get");
@@ -279,6 +279,11 @@ class JetApiCall
         return json_decode($responseContent);
     }
 
+    /**
+     * @param $byStatus
+     * @param $isCancelled
+     * @return mixed
+     */
     public function ordersByStatus($byStatus, $isCancelled)
     {
         $fullfillment = "?isCancelled=$isCancelled" . $this->fulfillmentNodeId();
@@ -290,6 +295,9 @@ class JetApiCall
     }
 
 
+    /**
+     * @return null
+     */
     public function saveJetProducts()
     {
         foreach ($this->jetProductData() as $item) {
@@ -304,8 +312,12 @@ class JetApiCall
             $jet_product->setStatus($singleItem['status']);
             $jet_product->save();
         }
+        return null;
     }
 
+    /**
+     * @return null
+     */
     public function saveJetOrders()
     {
         foreach ($this->jetOrderData() as $order) {
@@ -319,8 +331,12 @@ class JetApiCall
             $jet_order->setStatus($order->status);
             $jet_order->save();
         }
+        return null;
     }
 
+    /**
+     * @return null
+     */
     public function jetOrderAcknowledge()
     {
         foreach ($this->jetOrderData() as $order) {
@@ -347,6 +363,9 @@ class JetApiCall
         return null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getToken()
     {
         $user = $this->scopeConfig->getValue(self::USER_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
@@ -369,11 +388,20 @@ class JetApiCall
         return $token;
     }
 
+    /**
+     * @return string
+     */
     public function fulfillmentNodeId()
     {
         return "&fulfillment_node=" . $this->scopeConfig->getValue(self::FULFILLMENT_NODE_KEY, $scopeType = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null);
     }
 
+    /**
+     * @param $uriEndpoint
+     * @param $params
+     * @param $requestMethod
+     * @return Response
+     */
     public function sendRequest($uriEndpoint, $params, $requestMethod)
     {
        return $this->doRequest($uriEndpoint, $params, $requestMethod);

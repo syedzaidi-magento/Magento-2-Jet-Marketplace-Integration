@@ -17,11 +17,18 @@ class JetToken extends AbstractExtensibleModel implements JetTokenInterface
         $this->_init('Syedzaidi\JetIntegration\Model\ResourceModel\JetTokenResourceModel');
     }
 
+    /**
+     * @return int|mixed|null
+     */
     public function getTokenId()
     {
         return $this->getData(self::JET_TOKEN_ID);
     }
 
+    /**
+     * @param $id
+     * @return $this|void
+     */
     public function setTokenId($id)
     {
         $this->setData(self::JET_TOKEN_ID, $id);
@@ -29,11 +36,18 @@ class JetToken extends AbstractExtensibleModel implements JetTokenInterface
     }
 
 
+    /**
+     * @return mixed|string|null
+     */
     public function getToken()
     {
         return $this->getData(self::JET_TOKEN);
     }
 
+    /**
+     * @param $token
+     * @return $this|void
+     */
     public function setToken($token)
     {
         $this->setData(self::JET_TOKEN, $token);

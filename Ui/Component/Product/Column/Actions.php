@@ -51,6 +51,10 @@ class Actions extends Column
         $this->editUrl = $editUrl;
     }
 
+    /**
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource['data']['items'])) {

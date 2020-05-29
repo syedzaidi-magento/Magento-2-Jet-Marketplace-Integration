@@ -42,6 +42,9 @@ class Cancel extends Action implements HttpPostActionInterface
         $this->context = $context;
     }
 
+    /**
+     * @return \Magento\Backend\Model\View\Result\Redirect|ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $data = $this->getRequest()->getParam('order_id');

@@ -5,7 +5,6 @@ namespace Syedzaidi\JetIntegration\Block;
 
 
 use Magento\Framework\View\Element\Template;
-use phpDocumentor\Reflection\Types\String_;
 use Syedzaidi\JetIntegration\Helper\JetApiCall;
 
 class ProductsView extends Template
@@ -30,6 +29,9 @@ class ProductsView extends Template
         $this->jetApiCall = $jetApiCall;
     }
 
+    /**
+     * @return mixed | null
+     */
     public function getSingleJetProduct()
     {
         echo "<pre>";
@@ -48,5 +50,6 @@ class ProductsView extends Template
             }
         }
         print_r($jetOrder->sub_status);
+        return null;
     }
 }

@@ -37,6 +37,9 @@ class OrderView extends Template
         $this->jetOrderFactory = $jetOrderFactory;
     }
 
+    /**
+     * @return array
+     */
     public function jetOrderView()
     {
         $orderId = $this->getRequest()->getParam('order_id');

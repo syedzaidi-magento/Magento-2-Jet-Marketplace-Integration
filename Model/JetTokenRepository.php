@@ -35,6 +35,10 @@ class JetTokenRepository implements JetTokenRepositoryInterface
         $this->jetTokenFactory = $jetTokenFactory;
     }
 
+    /**
+     * @param $id
+     * @return string|\Syedzaidi\JetIntegration\Api\Data\JetTokenInterface
+     */
     public function getTokenById($id)
     {
         $jet_token = $this->jetTokenFactory->create();
@@ -42,6 +46,10 @@ class JetTokenRepository implements JetTokenRepositoryInterface
         return $jet_token->getToken() ?: "no token found";
     }
 
+    /**
+     * @param $token
+     * @return mixed|void
+     */
     public function setNewToken($token)
     {
         $new_token = $this->jetTokenFactory->create();
@@ -50,6 +58,9 @@ class JetTokenRepository implements JetTokenRepositoryInterface
         $new_token->save();
     }
 
+    /**
+     * @return mixed
+     */
     public function getTokenList()
     {
         $items = $this->collectionModelFactory->create();

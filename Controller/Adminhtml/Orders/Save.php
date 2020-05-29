@@ -37,6 +37,9 @@ class Save extends Action implements HttpPostActionInterface
         $this->jetApiCall = $jetApiCall;
     }
 
+    /**
+     * @return \Magento\Backend\Model\View\Result\Redirect|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();

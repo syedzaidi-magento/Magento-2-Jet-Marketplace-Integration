@@ -41,6 +41,9 @@ class DataProvider extends AbstractDataProvider implements DataProviderInterface
         $this->collectionModelFactory = $collectionModelFactory;
     }
 
+    /**
+     * @return array|mixed
+     */
     public function getData()
     {
         if (isset($this->_loadedData)) {

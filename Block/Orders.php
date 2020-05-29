@@ -30,11 +30,14 @@ class Orders extends Template
         $this->jetApiCall = $jetApiCall;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function jetOrderList()
     {
         $this->jetApiCall->setNewSaveToken();
         $this->jetApiCall->saveJetOrders();
         $this->jetApiCall->jetOrderAcknowledge();
-
+        return null;
     }
 }
