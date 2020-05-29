@@ -154,7 +154,7 @@ class JetApiCall
                 "jet_browse_node_id" => intval($nodeId),
                 "multipack_quantity" => 6,
                 "brand" => $product->getBrand(),
-                "main_image_url" => $this->urlInterface->getBaseUrl() . substr($product->getImage(), 1),
+                "main_image_url" => $this->urlInterface->getBaseUrl() . "pub/media/catalog/product/" . substr($product->getImage(), 1),
             ];
             array_push($productData,  $productDataSet);
 
