@@ -36,4 +36,15 @@
             <column name="order_id"/>
         </constraint>
     </table>
+
+    <table name="jet_integration_return" resource="default" engine="innodb"
+           comment="jet marketplace integration return table">
+        <column xsi:type="int" name="return_id" padding="10" unsigned="true" nullable="false" identity="true" comment="jet return Id"/>
+        <column xsi:type="varchar" name="merchant_order_id" nullable="false" comment="jet merchant order id" />
+        <column xsi:type="varchar" name="alt_order_id" nullable="false" comment="jet alt order id" />
+        <column xsi:type="varchar" name="return_status" nullable="false" comment="jet return status" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="return_id"/>
+        </constraint>
+    </table>
 </schema>
