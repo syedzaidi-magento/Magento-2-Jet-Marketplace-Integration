@@ -13,6 +13,11 @@
                 <item name="jet_order_listing_data_source" xsi:type="string">Syedzaidi\JetIntegration\Model\ResourceModel\JetOrder\JetOrderCollectionModel</item>
             </argument>
         </arguments>
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="jet_return_listing_data_source" xsi:type="string">Syedzaidi\JetIntegration\Model\ResourceModel\JetReturn\JetReturnCollectionModel</item>
+            </argument>
+        </arguments>
     </type>
     <virtualType name="Syedzaidi\JetIntegration\Model\ResourceModel\JetProduct\JetProductCollectionModel" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
@@ -24,6 +29,12 @@
         <arguments>
             <argument name="mainTable" xsi:type="string">jet_integration_order</argument>
             <argument name="resourceModel" xsi:type="string">Syedzaidi\JetIntegration\Model\ResourceModel\JetOrderResourceModel</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Syedzaidi\JetIntegration\Model\ResourceModel\JetReturn\JetReturnCollectionModel" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">jet_integration_return</argument>
+            <argument name="resourceModel" xsi:type="string">Syedzaidi\JetIntegration\Model\ResourceModel\JetReturnResourceModel</argument>
         </arguments>
     </virtualType>
 </config>
