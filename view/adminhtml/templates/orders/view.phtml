@@ -18,13 +18,14 @@ echo <<<TAG
     <div data-role="content">
 TAG;
 
-$singleorder = $block->jetOrderView();
-if ($singleorder['jet_request_directed_cancel'] === true) {
-    echo "<b>This order was canceled</b>";
+$singleOrder = $block->jetOrderView();
+
+if (is_array($singleOrder) && count($singleOrder)) {
+    if ($singleOrder['jet_request_directed_cancel'] === true) {
+        echo "<b>This order was canceled</b>";
+    }
+    echo "<pre>".json_encode($singleOrder, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)."</pre>";
+}else {
+    echo "<p>This order realtime data not available</p><br >";
 }
-
-echo "<pre>".json_encode($singleorder, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)."</pre>";
-
 echo "</div></div>";
-
-

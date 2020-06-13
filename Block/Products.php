@@ -63,18 +63,19 @@ class Products extends Template
     }
 
     /**
-     * @return null
+     * @return void
      */
     public function sendCatalogToJet()
     {
         $this->jetApiCall->setNewSaveToken();
-        foreach ($this->jetApiCall->jetProductData() as $item) {
-            $params = ["json" => $item];
-            $response = $this->jetApiCall->sendRequest("api/merchant-skus/" . $item['mfr_part_number'], $params, Request::HTTP_METHOD_PUT);
-            $status = $response->getStatusCode(); // 200 status code
+        if ($this->jetApiCall->jetProductData()) {
+            foreach ($this->jetApiCall->jetProductData() as $item) {
+                $params = ["json" => $item];
+                $response = $this->jetApiCall->sendRequest("api/merchant-skus/" . $item['mfr_part_number'], $params, Request::HTTP_METHOD_PUT);
+                $status = $response->getStatusCode(); // 200 status code
+            }
         }
         $this->jetApiCall->saveJetProducts();
-        return null;
     }
 
     /**

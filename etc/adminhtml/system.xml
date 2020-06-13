@@ -10,26 +10,42 @@
                     <field id="user_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>User Key</label>
                         <comment>Add jet market place user key here.</comment>
+                        <validate>validate-no-html-tags no-whitespace</validate>
                     </field>
                     <field id="secret_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Secret Key</label>
                         <comment>Add jet market place secret key here.</comment>
+                        <validate>validate-no-html-tags no-whitespace</validate>
                     </field>
                     <field id="merchant_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Merchant Id</label>
                         <comment>Add jet market place merchant id here.</comment>
+                        <validate>validate-no-html-tags no-whitespace</validate>
                     </field>
                     <field id="category_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Category Id</label>
                         <comment>Add store category id here.</comment>
+                        <validate>validate-number validate-not-negative-number validate-no-html-tags no-whitespace</validate>
                     </field>
                     <field id="jet_browse_node_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Jet Browse Node Id</label>
                         <comment>Add jet brows node id here.</comment>
+                        <validate>validate-number validate-not-negative-number validate-no-html-tags no-whitespace</validate>
                     </field>
                     <field id="fulfillment_node_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                         <label>Fulfillment Node Id</label>
                         <comment>Add jet market place fulfillment node id here.</comment>
+                        <validate>validate-no-html-tags no-whitespace</validate>
+                    </field>
+                    <field id="jet_cron_job_product" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Product Cron Schedule</label>
+                        <comment>Add schedule here. By default its running every minuets</comment>
+                        <validate>validate-no-html-tags</validate>
+                    </field>
+                    <field id="jet_cron_job_order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Order Cron Schedule</label>
+                        <comment>Add schedule here. By default its running every minuets</comment>
+                        <validate>validate-no-html-tags</validate>
                     </field>
             </group>
         </section>

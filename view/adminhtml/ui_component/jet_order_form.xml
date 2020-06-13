@@ -48,6 +48,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Order Id</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
@@ -59,6 +60,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Alt Order Id</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
@@ -70,6 +72,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Buyer Name</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
@@ -81,6 +84,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Phone Number</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
@@ -92,6 +96,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Email Address</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
@@ -103,6 +108,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Order Placed Date</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
@@ -114,6 +120,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                     <item name="label" xsi:type="string" translate="true">Status</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
@@ -129,6 +136,10 @@
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
                     <item name="dataScope" xsi:type="string">tracking_number</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-no-html-tags" xsi:type="string">true</item>
+                    </item>
                 </item>
             </argument>
         </field>
@@ -140,6 +151,11 @@
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">order</item>
                     <item name="dataScope" xsi:type="string">shipping_carrier</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-no-html-tags" xsi:type="string">true</item>
+                        <item name="letters-only" xsi:type="string">true</item>
+                    </item>
                 </item>
             </argument>
         </field>

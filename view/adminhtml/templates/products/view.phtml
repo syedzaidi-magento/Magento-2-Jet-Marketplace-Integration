@@ -5,4 +5,27 @@
 
 use Syedzaidi\JetIntegration\Block\ProductsView;
 
-$block->getSingleJetProduct();
+$jetProduct = $block->getSingleJetProduct();
+
+if (is_array($jetProduct)) {
+    foreach ($jetProduct as $key => $value) {
+        if (is_string($key) && !is_array($value)) {
+            echo "<strong>$key</strong>" . ": " . $value . "<br>";
+        }
+        if (is_array($value)) {
+            foreach ($value as $key2 => $result) {
+                echo "<strong>fulfillment_node_id</strong>: " . $result->fulfillment_node_id . "<br>";
+                echo "<strong>Quantity</strong>: " . $result->quantity . "<br>";
+                echo "<strong>inventory_last_update</strong>: " . $result->inventory_last_update . "<br>";
+            }
+        }
+    }
+    if (array_key_exists("sub_status", $jetProduct)) {
+        echo "<strong>Sub Status:</strong>". PHP_EOL;
+        foreach ($jetProduct['sub_status'] as $subKey => $subValue) {
+            echo "<strong>$subKey</strong>" . ": " . $subValue . "<br>";
+        }
+    }elseif (!array_key_exists("status", $jetProduct)) {
+        echo "There is no product data available.";
+    }
+}

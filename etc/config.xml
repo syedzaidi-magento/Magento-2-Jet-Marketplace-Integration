@@ -10,6 +10,8 @@
                 <category_id>2</category_id>
                 <jet_browse_node_id>14000009</jet_browse_node_id>
                 <fulfillment_node_id>xxxxxxxxxxxxxxx</fulfillment_node_id>
+                <jet_cron_job_product>* * * * *</jet_cron_job_product>
+                <jet_cron_job_order>* * * * *</jet_cron_job_order>
             </jet_integration_settings>
         </general>
     </default>

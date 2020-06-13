@@ -47,58 +47,61 @@ class Save extends Action implements HttpPostActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
         $singleOrder = (array) $this->jetApiCall->ordersDetails($data['alt_order_id']);
 
-        if ($singleOrder['jet_request_directed_cancel'] === true) {
-            $this->messageManager->addErrorMessage(__('Tracking number not save. Order was canceled.'));
-            return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
-        }
-        $jet_order = $this->jetOrderFactory->create();
-        $jet_order->load($data['alt_order_id'], "alt_order_id");
+        if (is_array($singleOrder) && count($singleOrder)) {
+            if ($singleOrder['jet_request_directed_cancel'] === true) {
+                $this->messageManager->addErrorMessage(__('Tracking number not save. Order was canceled.'));
+                return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
+            }
+            $jet_order = $this->jetOrderFactory->create();
+            $jet_order->load($data['alt_order_id'], "alt_order_id");
 
-        if ($jet_order->getTrackingNumber()) {
-            $this->messageManager->addErrorMessage(__('Tracking number already saved.'));
-            return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
-        }
-
-        // Call api here to add tracking number on Jet.....
-        $orderItems = (array) $singleOrder['order_items'][0];
-        $merchantSku = $orderItems['merchant_sku'];
-        $jetDefineOrderId = $singleOrder['merchant_order_id'];
-        $altOrderId = $data['alt_order_id'];
-        $trackingNumber = $data['tracking_number'];
-        $shippingCarrier = $data['shipping_carrier'];
-        $orderDate = date('Y-m-d\TH:i:s'. substr ( ( string ) microtime (), 1, 7 ) . 'Z-h:i');
-        $trackingData = [
-            'json' => [
-                'alt_order_id' => $altOrderId,
-                'shipments' => [
-                    [
-                    'shipment_tracking_number' => $trackingNumber,
-                    'response_shipment_date' => $orderDate,
-                    'carrier' => $shippingCarrier,
-                    'shipment_items' => [
-                            [
-                                'alt_shipment_item_id' => $altOrderId,
-                                'merchant_sku' => $merchantSku,
-                                'response_shipment_sku_quantity' => 1,
+            if ($jet_order->getTrackingNumber()) {
+                $this->messageManager->addErrorMessage(__('Tracking number already saved.'));
+                return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
+            }
+            // Call api here to add tracking number on Jet.....
+            $orderItems = (array) $singleOrder['order_items'][0];
+            $merchantSku = $orderItems['merchant_sku'];
+            $jetDefineOrderId = $singleOrder['merchant_order_id'];
+            $altOrderId = $data['alt_order_id'];
+            $trackingNumber = $data['tracking_number'];
+            $shippingCarrier = $data['shipping_carrier'];
+            $orderDate = date('Y-m-d\TH:i:s'. substr ( ( string ) microtime (), 1, 7 ) . 'Z-h:i');
+            $trackingData = [
+                'json' => [
+                    'alt_order_id' => $altOrderId,
+                    'shipments' => [
+                        [
+                            'shipment_tracking_number' => $trackingNumber,
+                            'response_shipment_date' => $orderDate,
+                            'carrier' => $shippingCarrier,
+                            'shipment_items' => [
+                                [
+                                    'alt_shipment_item_id' => $altOrderId,
+                                    'merchant_sku' => $merchantSku,
+                                    'response_shipment_sku_quantity' => 1,
+                                ],
                             ],
                         ],
                     ],
-                ],
-            ]
-        ];
+                ]
+            ];
 
-        $response = $this->jetApiCall->sendRequest("api/orders/". $jetDefineOrderId . "/shipped", $trackingData, "PUT");
-        $status = $response->getStatusCode(); // 204 updated tracking information....
+            $response = $this->jetApiCall->sendRequest("api/orders/". $jetDefineOrderId . "/shipped", $trackingData, "PUT");
+            $status = $response->getStatusCode(); // 204 updated tracking information....
 
-        if ($status === 204) {
-            $jet_order->setTrackingNumber($data['tracking_number']);
-            $jet_order->setShippingCarrier($data['shipping_carrier']);
-            $jet_order->save();
-            $this->messageManager->addSuccessMessage(__("Tracking number updated to Jet Marketplace and Magento Store. $status"));
+            if ($status === 204) {
+                $jet_order->setTrackingNumber($data['tracking_number']);
+                $jet_order->setShippingCarrier($data['shipping_carrier']);
+                $jet_order->save();
+                $this->messageManager->addSuccessMessage(__("Tracking number updated to Jet Marketplace and Magento Store. $status"));
+                return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
+            }
+            $this->messageManager->addErrorMessage(__("Tracking info is not update to Jet Marketplace. $status"));
             return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
         }
 
-        $this->messageManager->addErrorMessage(__("Tracking info is not update to Jet Marketplace. $status"));
+        $this->messageManager->addErrorMessage(__("Tracking information is not update to Jet Marketplace."));
         return $resultRedirect->setPath('*/*/view', ['order_id' => $this->getRequest()->getParam('order_id')]);
 
     }

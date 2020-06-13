@@ -3,7 +3,6 @@
 
 namespace Syedzaidi\JetIntegration\Block;
 
-
 use Magento\Framework\View\Element\Template;
 use Syedzaidi\JetIntegration\Helper\JetApiCall;
 
@@ -30,26 +29,11 @@ class ProductsView extends Template
     }
 
     /**
-     * @return mixed | null
+     * @return array
      */
     public function getSingleJetProduct()
     {
-        echo "<pre>";
         $productId = $this->getRequest()->getParam('merchant_sku');
-        $jetOrder = $this->jetApiCall->getSingleSku($productId);
-        foreach ($jetOrder as $key => $value) {
-            if (is_string($key) && !is_array($value)) {
-                echo "<strong>$key</strong>" . ": " . $value . "<br>";
-            }
-            if (is_array($value)) {
-                foreach ($value as $key2 => $result) {
-                    echo "<strong>fulfillment_node_id</strong>: " . $result->fulfillment_node_id . "<br>";
-                    echo "<strong>Quantity</strong>: " . $result->quantity . "<br>";
-                    echo "<strong>inventory_last_update</strong>: " . $result->inventory_last_update . "<br>";
-                    }
-            }
-        }
-        print_r($jetOrder->sub_status);
-        return null;
+        return (array) $this->jetApiCall->getSingleSku($productId);
     }
 }
