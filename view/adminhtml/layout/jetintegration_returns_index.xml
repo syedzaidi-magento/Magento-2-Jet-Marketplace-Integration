@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block name="jetintegration.returns" class="Syedzaidi\JetIntegration\Block\Returns" template="Syedzaidi_JetIntegration::returns/index.phtml"/>
+            <uiComponent name="jet_return_listing"/>
+        </referenceContainer>
+    </body>
+</page>

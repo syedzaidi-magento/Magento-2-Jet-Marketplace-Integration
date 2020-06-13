@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">jet_return_listing.jet_return_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/*/new"/>
+                <class>primary</class>
+                <label translate="true">Add New Page</label>
+            </button>
+        </buttons>
+        <spinner>jet_return_columns</spinner>
+        <deps>
+            <dep>jet_return_listing.jet_return_listing_data_source</dep>
+        </deps>
+    </settings>
+
+    <dataSource name="jet_return_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">return_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Magento_Cms::page</aclResource>
+        <dataProvider class="Magento\Cms\Ui\Component\DataProvider" name="jet_return_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>return_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="jet_listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="sticky" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+
+        <bookmark name="jet_bookmarks"/>
+
+        <columnsControls name="jet_columns_controls"/>
+
+        <filterSearch name="jet_fulltext"/>
+
+        <filters name="jet_listing_filters" />
+
+        <paging name="jet_listing_paging"/>
+
+        <exportButton name="jet_export_button"/>
+
+    </listingToolbar>
+    <columns name="jet_product_columns">
+        <column name="return_id">
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="merchant_sku">
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Merchant SKU</label>
+            </settings>
+        </column>
+        <column name="status">
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Jet Status</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Syedzaidi\JetIntegration\Ui\Component\JetReturn\Column\Actions">
+            <settings>
+                <label translate="true">Actions</label>
+                <indexField>return_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>
