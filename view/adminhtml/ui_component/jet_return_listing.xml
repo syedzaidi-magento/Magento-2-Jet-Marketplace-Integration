@@ -7,13 +7,6 @@
         </item>
     </argument>
     <settings>
-        <buttons>
-            <button name="add">
-                <url path="*/*/new"/>
-                <class>primary</class>
-                <label translate="true">Add New Page</label>
-            </button>
-        </buttons>
         <spinner>jet_return_columns</spinner>
         <deps>
             <dep>jet_return_listing.jet_return_listing_data_source</dep>
