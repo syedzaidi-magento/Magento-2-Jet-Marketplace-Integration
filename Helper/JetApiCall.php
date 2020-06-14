@@ -17,6 +17,7 @@ use Magento\Framework\Webapi\Rest\Request;
 use Syedzaidi\JetIntegration\Api\JetTokenRepositoryInterface;
 use Syedzaidi\JetIntegration\Model\JetOrderFactory;
 use Syedzaidi\JetIntegration\Model\JetProductFactory;
+use Syedzaidi\JetIntegration\Model\JetReturnFactory;
 
 
 class JetApiCall
@@ -94,6 +95,10 @@ class JetApiCall
      * @var JetOrderFactory
      */
     private $jetOrderFactory;
+    /**
+     * @var JetReturnFactory
+     */
+    private $jetReturnFactory;
 
     /**
      * JetApiCall constructor.
@@ -104,6 +109,7 @@ class JetApiCall
      * @param UrlInterface $urlInterface
      * @param JetProductFactory $jetProductFactory
      * @param JetOrderFactory $jetOrderFactory
+     * @param JetReturnFactory $jetReturnFactory
      * @param StockRegistryInterface $stockRegistry
      * @param JetTokenRepositoryInterface $jetTokenRepositoryInterface
      */
@@ -115,6 +121,7 @@ class JetApiCall
         UrlInterface $urlInterface,
         JetProductFactory $jetProductFactory,
         JetOrderFactory $jetOrderFactory,
+        JetReturnFactory $jetReturnFactory,
         StockRegistryInterface $stockRegistry,
         JetTokenRepositoryInterface $jetTokenRepositoryInterface
     ){
@@ -127,6 +134,7 @@ class JetApiCall
         $this->jetProductFactory = $jetProductFactory;
         $this->stockRegistry = $stockRegistry;
         $this->jetOrderFactory = $jetOrderFactory;
+        $this->jetReturnFactory = $jetReturnFactory;
     }
 
     /**
@@ -275,6 +283,38 @@ class JetApiCall
     }
 
     /**
+     * @return array
+     */
+    public function jetReturnData()
+    {
+        $returnCreateList = $this->returnsByStatus("created");
+        $returnInProgressList = $this->returnsByStatus("inprogress");
+        $returnCompletedList = $this->returnsByStatus("completed");
+
+        $returnData = [];
+        if ($returnCreateList) {
+            foreach ($returnCreateList->return_urls as $return_url) {
+                $returnId = substr("$return_url", 15);
+                array_push($returnData, $this->returnsDetails($returnId));
+            }
+        }
+        if ($returnInProgressList) {
+            foreach ($returnInProgressList->return_urls as $return_url) {
+                $returnId = substr("$return_url", 15);
+                array_push($returnData, $this->returnsDetails($returnId));
+            }
+        }
+        if ($returnCompletedList) {
+            foreach ($returnCompletedList->return_urls as $return_url) {
+                $returnId = substr("$return_url", 15);
+                array_push($returnData, $this->returnsDetails($returnId));
+            }
+        }
+
+        return $returnData;
+    }
+
+    /**
      * @param $byStatus
      * @param $tag
      * @return mixed
@@ -310,6 +350,32 @@ class JetApiCall
     {
         $fullfillment = "?isCancelled=$isCancelled" . $this->fulfillmentNodeId();
         $response = $this->sendRequest("api/orders/" . $byStatus . $fullfillment, $parram = [], "GET");
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        return json_decode($responseContent);
+    }
+
+    /**
+     * @param $byStatus
+     * @return mixed
+     */
+    public function returnsByStatus($byStatus)
+    {
+        $response = $this->sendRequest("api/returns/" . $byStatus, $parram = [], "GET");
+        $status = $response->getStatusCode(); // 200 status code
+        $responseBody = $response->getBody();
+        $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
+        return json_decode($responseContent);
+    }
+
+    /**
+     * @param $jetDefinedReturnId
+     * @return mixed
+     */
+    public function returnsDetails($jetDefinedReturnId)
+    {
+        $response = $this->sendRequest("api/returns/state/" . $jetDefinedReturnId, [], "Get");
         $status = $response->getStatusCode(); // 200 status code
         $responseBody = $response->getBody();
         $responseContent = $responseBody->getContents(); // here you will have the API response in JSON format
@@ -358,6 +424,24 @@ class JetApiCall
                 $jet_order->setOrderPlacedDate($order->order_placed_date);
                 $jet_order->setStatus($order->status);
                 $jet_order->save();
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function saveJetReturns()
+    {
+        if ($this->jetReturnData()) {
+            foreach ($this->jetReturnData() as $return) {
+                $jet_return = $this->jetReturnFactory->create();
+                $jet_return->load($return->reference_return_authorization_id, "reference_return_authorization_id");
+                $jet_return->setAltOrderId($return->alt_order_id);
+                $jet_return->setMerchantOrderId($return->merchant_order_id);
+                $jet_return->setReferenceReturnAuthorizationId($return->reference_return_authorization_id);
+                $jet_return->setReturnStatus($return->return_status);
+                $jet_return->save();
             }
         }
     }

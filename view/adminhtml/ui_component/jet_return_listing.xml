@@ -70,6 +70,13 @@
                 <label translate="true">Return Status</label>
             </settings>
         </column>
+        <column name="reference_return_authorization_id">
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Return Authorization Id</label>
+            </settings>
+        </column>
         <actionsColumn name="actions" class="Syedzaidi\JetIntegration\Ui\Component\JetReturn\Column\Actions">
             <settings>
                 <label translate="true">Actions</label>
