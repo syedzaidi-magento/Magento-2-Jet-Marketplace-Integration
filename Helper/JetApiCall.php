@@ -439,6 +439,7 @@ class JetApiCall
                 $jet_return->load($return->reference_return_authorization_id, "reference_return_authorization_id");
                 $jet_return->setAltOrderId($return->alt_order_id);
                 $jet_return->setMerchantOrderId($return->merchant_order_id);
+                $jet_return->setMerchantReturnAuthorizationId($return->merchant_return_authorization_id);
                 $jet_return->setReferenceReturnAuthorizationId($return->reference_return_authorization_id);
                 $jet_return->setReturnStatus($return->return_status);
                 $jet_return->save();

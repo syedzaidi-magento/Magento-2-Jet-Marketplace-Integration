@@ -9,8 +9,7 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Syedzaidi\JetIntegration\Block\Adminhtml\Order\Edit\SaveButton"/>
-            <button name="cancel" class="Syedzaidi\JetIntegration\Block\Adminhtml\Order\Edit\CancelButton"/>
+            <button name="return-complete" class="Syedzaidi\JetIntegration\Block\Adminhtml\JetReturn\Edit\CompleteButton"/>
             <button name="back" class="\Magento\Cms\Block\Adminhtml\Page\Edit\BackButton"/>
         </buttons>
         <namespace>jet_return_form</namespace>
@@ -32,7 +31,7 @@
             </item>
         </argument>
         <settings>
-            <submitUrl path="jetintegration/returns/save"/>
+            <submitUrl path="jetintegration/returns/complete"/>
         </settings>
     </dataSource>
 

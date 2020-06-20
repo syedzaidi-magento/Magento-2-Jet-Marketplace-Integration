@@ -42,6 +42,7 @@
         <column xsi:type="int" name="return_id" padding="10" unsigned="true" nullable="false" identity="true" comment="jet return Id"/>
         <column xsi:type="varchar" name="alt_order_id" nullable="false" comment="jet alt order id" />
         <column xsi:type="varchar" name="merchant_order_id" nullable="false" comment="jet merchant order id" />
+        <column xsi:type="varchar" name="merchant_return_authorization_id" nullable="false" comment="merchant return authorization id" />
         <column xsi:type="varchar" name="reference_return_authorization_id" nullable="false" comment="jet reference return authorization id" />
         <column xsi:type="varchar" name="return_status" nullable="false" comment="jet return status" />
         <constraint xsi:type="primary" referenceId="PRIMARY">
