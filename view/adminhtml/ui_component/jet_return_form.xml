@@ -55,6 +55,54 @@
                 </item>
             </argument>
         </field>
+        <field name="alt_order_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Alt Order Id</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">return</item>
+                    <item name="dataScope" xsi:type="string">alt_order_id</item>
+                </item>
+            </argument>
+        </field>
+        <field name="merchant_order_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Merchant Order Id</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">return</item>
+                    <item name="dataScope" xsi:type="string">merchant_order_id</item>
+                </item>
+            </argument>
+        </field>
+        <field name="merchant_return_authorization_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Merchant Return Authorization Id</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">return</item>
+                    <item name="dataScope" xsi:type="string">merchant_return_authorization_id</item>
+                </item>
+            </argument>
+        </field>
+        <field name="reference_return_authorization_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Reference Return Authorization Id</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">return</item>
+                    <item name="dataScope" xsi:type="string">reference_return_authorization_id</item>
+                </item>
+            </argument>
+        </field>
         <field name="return_status">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -64,6 +112,30 @@
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">return</item>
                     <item name="dataScope" xsi:type="string">return_status</item>
+                </item>
+            </argument>
+        </field>
+        <field name="shipping_carrier">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Shipping Carrier</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">return</item>
+                    <item name="dataScope" xsi:type="string">shipping_carrier</item>
+                </item>
+            </argument>
+        </field>
+        <field name="tracking_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Tracking Number</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">return</item>
+                    <item name="dataScope" xsi:type="string">tracking_number</item>
                 </item>
             </argument>
         </field>

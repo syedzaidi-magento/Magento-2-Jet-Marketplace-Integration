@@ -45,6 +45,8 @@
         <column xsi:type="varchar" name="merchant_return_authorization_id" nullable="false" comment="merchant return authorization id" />
         <column xsi:type="varchar" name="reference_return_authorization_id" nullable="false" comment="jet reference return authorization id" />
         <column xsi:type="varchar" name="return_status" nullable="false" comment="jet return status" />
+        <column xsi:type="varchar" name="shipping_carrier" nullable="false" comment="jet shipping carrier" />
+        <column xsi:type="varchar" name="tracking_number" nullable="false" comment="jet tracking number" />
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="return_id"/>
         </constraint>

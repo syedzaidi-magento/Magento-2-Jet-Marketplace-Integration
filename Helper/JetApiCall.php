@@ -441,6 +441,8 @@ class JetApiCall
                 $jet_return->setMerchantOrderId($return->merchant_order_id);
                 $jet_return->setMerchantReturnAuthorizationId($return->merchant_return_authorization_id);
                 $jet_return->setReferenceReturnAuthorizationId($return->reference_return_authorization_id);
+                $jet_return->setShippingCarrier($return->shipping_carrier);
+                $jet_return->setTrackingNumber($return->tracking_number);
                 $jet_return->setReturnStatus($return->return_status);
                 $jet_return->save();
             }
