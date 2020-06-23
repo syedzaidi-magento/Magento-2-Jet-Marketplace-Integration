@@ -1,4 +1,19 @@
 <?php
 /** @var \Syedzaidi\JetIntegration\Block\ReturnsView $block **/
 
+echo <<<TAG
+<div data-mage-init='{
+    "collapsible":{
+        "collapsible": true,
+        "openedState": "active",
+        "active": false
+    }}' class="fieldset-wrapper admin__collapsible-block-wrapper">
+    <div data-role="title" class="admin__collapsible-title">
+        <h4>Realtime Jet Return Data</h4>
+    </div>
+    <div data-role="content">
+TAG;
+
 $block->realTimeReturn();
+
+echo "</div></div>";

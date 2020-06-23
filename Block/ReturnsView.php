@@ -37,27 +37,17 @@ class ReturnsView extends Template
         $this->jetApiCall = $jetApiCall;
     }
 
+    /**
+     * @return void
+     */
     public function realTimeReturn()
     {
         $returnId = $this->getRequest()->getParam('return_id');
         $jetReturn = $this->jetReturnFactory->create();
         $jetReturn->load($returnId, 'return_id');
         $returnAuthorizationId = $jetReturn->getMerchantReturnAuthorizationId();
-        $return = (array) $this->jetApiCall->returnsDetails($returnAuthorizationId);
-        foreach ($return as $key => $value) {
-            if (is_string($value)) {
-                echo $key . " - " . $value . "<br >";
-            }
-            if (is_array($value)) {
-                foreach ($value as $key1 => $value1) {
-                    echo $key1 . " - -  " . "<br >";
-                }
-            }
-        }
+        $orderReturn = (array) $this->jetApiCall->returnsDetails($returnAuthorizationId);
 
-        echo "<hr>";
-        echo "<pre>";
-        print_r($return);
-
+        echo "<pre>".json_encode($orderReturn, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)."</pre>";
     }
 }
