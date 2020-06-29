@@ -259,6 +259,7 @@ class JetApiCall
     {
         $orderList = $this->ordersByTagged("ready", "");
         $orderListAcknowledged = $this->ordersByTagged("acknowledged", "");
+        $orderListInprogress = $this->ordersByTagged("inprogress", "");
         $orderListComplete = $this->ordersByTagged("complete", "");
         $orderData = [];
         if ($orderList) {
@@ -269,6 +270,12 @@ class JetApiCall
         }
         if ($orderListAcknowledged) {
             foreach ($orderListAcknowledged->order_urls as $order_url) {
+                $orderId = substr("$order_url", 30);
+                array_push($orderData, $this->ordersDetails($orderId));
+            }
+        }
+        if ($orderListInprogress) {
+            foreach ($orderListInprogress->order_urls as $order_url) {
                 $orderId = substr("$order_url", 30);
                 array_push($orderData, $this->ordersDetails($orderId));
             }
@@ -289,7 +296,7 @@ class JetApiCall
     {
         $returnCreateList = $this->returnsByStatus("created");
         $returnInProgressList = $this->returnsByStatus("inprogress");
-        $returnCompletedList = $this->returnsByStatus("completed");
+        $returnCompletedList = $this->returnsByStatus("completed by merchant");
 
         $returnData = [];
         if ($returnCreateList) {
@@ -524,6 +531,7 @@ class JetApiCall
      * @param $params
      * @param $requestMethod
      * @return Response
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function sendRequest($uriEndpoint, $params, $requestMethod)
     {
@@ -536,6 +544,7 @@ class JetApiCall
      * @param array $params
      * @param string $requestMethod
      * @return Response
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     private function doRequest(
         string $uriEndpoint,
